@@ -15,8 +15,6 @@
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
   --font-display: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
 }
-*{box-sizing:border-box}
-
 
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -24,11 +22,13 @@ body{
   margin:0;
   font-family:var(--font);
   color:var(--text);
-  /* Более ровный фон без полос (iOS иногда дает "синие линии" на градиентах) */
-  background: var(--bg);
+  background:
+    radial-gradient(1000px 600px at 20% -10%, rgba(124,58,237,.25), transparent 60%),
+    radial-gradient(900px 520px at 90% 10%, rgba(34,211,238,.18), transparent 55%),
+    radial-gradient(800px 600px at 50% 110%, rgba(163,230,53,.12), transparent 55%),
+    linear-gradient(180deg, #000 0%, var(--bg) 30%, #000 100%);
   overflow-x:hidden;
 }
-
 
 a{color:inherit; text-decoration:none}
 img{max-width:100%; display:block}
@@ -50,8 +50,7 @@ header{
 .nav{
   display:flex;
   align-items:center;
-  justify-content:center;
-  flex-direction:column;
+  justify-content:space-between;
   gap:16px;
   padding:14px 0;
 }
@@ -120,9 +119,6 @@ header{
     width:100%;
     text-align:center;
   }
-  body.nav-open .nav.navstack .navlinks .pill{display:flex; justify-content:center}
-  body.nav-open .nav.navstack .navlinks .pill.mobile-only{display:flex; justify-content:center}
-
 }
 
 .brand{
@@ -225,11 +221,7 @@ main{padding:38px 0 74px}
   border:1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-
-  padding:22px;
-  overflow:hidden;
 }
-
 
 .hero-card{
   padding:28px;
@@ -292,7 +284,7 @@ h1{
   color: rgba(245,247,255,.84);
 }
 
-.btnrow{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
+.btnrow{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px}
 .btn{
   display:inline-flex;
   gap:10px;
@@ -345,8 +337,7 @@ h1{
 .section-title{
   display:flex;
   align-items:flex-end;
-  justify-content:center;
-  flex-direction:column;
+  justify-content:space-between;
   gap:10px;
   margin-bottom:12px;
 }
@@ -393,28 +384,17 @@ h1{
 footer{
   border-top:1px solid var(--line);
   background: rgba(0,0,0,.55);
-  padding:28px 0;
+  padding:22px 0;
   color: var(--muted);
 }
 .foot{
   display:flex;
-  gap:10px;
+  gap:12px;
   align-items:center;
-  justify-content:center;
-  flex-direction:column;
+  justify-content:space-between;
   flex-wrap:wrap;
 }
 .small{font-size:12px; opacity:.85}
-
-.foot .btnrow{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:center;
-  margin-top:10px;
-  width:100%;
-}
-
 
 /* reveal animations */
 .reveal{
@@ -433,19 +413,6 @@ footer{
   .brand .logo{width:190px}
   .grid{grid-template-columns:1fr}
   .list{grid-template-columns:1fr}
-
-  /* footer mobile */
-  footer .foot{
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    justify-content:center;
-    gap:14px;
-  }
-  footer .foot .btnrow{
-    justify-content:center;
-    margin-top:6px;
-  }
 }
 
 @media (max-width: 520px){
@@ -453,213 +420,4 @@ footer{
   .pill{padding:9px 12px; font-size:13px}
   .hero-card{padding:22px}
   .btn{width:100%}
-}
-
-/* footer links */
-.footer-links{
-  justify-content:center;
-  width:100%;
-  gap:14px;
-  margin-top:12px;
-}
-.footer-links .pill{padding:12px 18px}
-
-
-/* Mobile-only nav items: show in burger, hide on wide screens */
-.mobile-only{ display:inline-flex; }
-@media (min-width: 820px){
-  .mobile-only{ display:none !important; }
-}
-
-/* Badges layout fix on phones: keep 2x2 grid so "Онлайн/оффлайн" aligns nicely */
-@media (max-width: 520px){
-  .badges{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-  }
-  .badge{
-    text-align:center;
-    white-space:normal;
-    justify-self:stretch;
-  }
-}
-
-
-/* Reviews form */
-.review-form .rf-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-@media (max-width: 720px){
-  .review-form .rf-grid{grid-template-columns: 1fr;}
-}
-.rf-field{display:block}
-.rf-field > span{
-  display:block;
-  font-size: .95rem;
-  color: rgba(245,247,255,.85);
-  margin: 0 0 8px;
-}
-.review-form input,
-.review-form textarea{
-  width:100%;
-  border-radius: 14px;
-  padding: 12px 14px;
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.14);
-  color: rgba(245,247,255,.95);
-  outline: none;
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
-}
-.review-form textarea{resize: vertical; min-height: 120px}
-.review-form input:focus,
-.review-form textarea:focus{
-  border-color: rgba(34,211,238,.55);
-  box-shadow: 0 0 0 3px rgba(34,211,238,.15);
-}
-.rf-rating{
-  display:flex;
-  gap: 8px;
-  align-items:center;
-  flex-direction: row-reverse;
-  justify-content:flex-end;
-  user-select:none;
-}
-.rf-rating input{display:none}
-.rf-rating label{
-  font-size: 28px;
-  line-height: 1;
-  cursor:pointer;
-  color: rgba(245,247,255,.25);
-  text-shadow: 0 0 14px rgba(124,58,237,.25);
-  transition: transform .12s ease, color .12s ease, text-shadow .12s ease;
-}
-.rf-rating label:hover{
-  transform: translateY(-1px);
-  color: rgba(34,211,238,.75);
-  text-shadow: 0 0 18px rgba(34,211,238,.35);
-}
-.rf-rating input:checked ~ label{
-  color: rgba(124,58,237,.85);
-  text-shadow: 0 0 18px rgba(124,58,237,.45);
-}
-.review-list{
-  margin-top: 14px;
-  display:grid;
-  gap: 14px;
-}
-.review-item{
-  padding: 16px 16px;
-  border-radius: var(--radius);
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 16px 40px rgba(0,0,0,.35);
-}
-.review-item .meta{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  margin-bottom:8px;
-  color: rgba(245,247,255,.75);
-  font-size:.92rem;
-}
-.review-item .stars{
-  color: rgba(124,58,237,.9);
-  text-shadow: 0 0 14px rgba(124,58,237,.35);
-}
-.review-item .text{
-  color: rgba(245,247,255,.85);
-  white-space: pre-wrap;
-}
-
-
-/* --- v5 tweaks --- */
-.card, .meta, .sub, .text { word-break: break-word; overflow-wrap:anywhere; }
-
-.price-table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0 10px;
-  margin-top:12px;
-}
-.price-table th, .price-table td{
-  padding:10px 12px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.10);
-}
-.price-table th{
-  text-align:left;
-  color: rgba(245,247,255,.85);
-  font-weight:700;
-}
-.price-table td:last-child, .price-table th:last-child{
-  text-align:right;
-  white-space:nowrap;
-}
-.price-table tr:first-child th:first-child{border-top-left-radius:14px}
-.price-table tr:first-child th:last-child{border-top-right-radius:14px}
-.price-table tr:last-child td:first-child{border-bottom-left-radius:14px}
-.price-table tr:last-child td:last-child{border-bottom-right-radius:14px}
-
-.warmup-highlight{font-weight:800; color: rgba(34,211,238,.85); text-shadow: 0 0 18px rgba(34,211,238,.25);}
-
-.rf-rating label{
-  display:inline-flex;
-  padding:6px;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.review-item{opacity:0; transform: translateY(10px);}
-.review-item.in{animation: reviewIn .5s ease forwards;}
-@keyframes reviewIn{
-  from{opacity:0; transform: translateY(10px);}
-  to{opacity:1; transform: translateY(0);}
-}
-
-.card, .card p, .meta, .pill, .btn, .input, textarea{max-width:100%}
-.card, .card p{overflow-wrap:anywhere; word-break:break-word}
-
-.profile-photo-wrap{display:flex;justify-content:center;align-items:center;margin:22px 0 0}
-.profile-photo{width:min(420px, 92vw);height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
-
-.btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:18px 0 6px}
-.btn-row .btn{flex:1 1 220px}
-
-.about-photo-wrap{display:flex;justify-content:center;align-items:center;margin:18px 0 0}
-.about-photo{width:min(420px, 92vw);height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
-
-
-/* Gallery */
-.gallery-grid{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:14px;
-  margin-top:18px;
-}
-@media (min-width: 720px){
-  .gallery-grid{grid-template-columns: repeat(2, 1fr);}
-  .gallery-grid .gallery-item:nth-child(3){grid-column: 1 / -1;}
-}
-.gallery-item{
-  margin:0;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  box-shadow: 0 18px 40px rgba(0,0,0,.35);
-}
-.gallery-item img{
-  display:block;
-  width:100%;
-  height:auto;
-}
-.spacer{height:18px;}
-.video-box{
-  border:1px dashed rgba(255,255,255,.16);
-  border-radius:18px;
-  padding:14px;
-  background: rgba(255,255,255,.02);
 }

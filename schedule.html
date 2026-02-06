@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DMITRY_BLACK — Расписание</title>
   <meta name="description" content="DMITRY_BLACK — танцевальные услуги онлайн: HIP-HOP, латиноамериканские ритмы, современная хореография. Индивидуальные и групповые занятия." />
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -13,7 +13,7 @@
 <header>
   <div class="container nav navstack">
     <a class="brand" href="index.html" aria-label="DMITRY_BLACK">
-      <img class="logo" src="logo.png" alt="DMITRY_BLACK" />
+      <img class="logo" src="assets/logo.png" alt="DMITRY_BLACK" />
     </a>
 
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav">
@@ -25,10 +25,6 @@
       <a class="pill " data-nav href="about.html"><span>Обо мне</span></a>
       <a class="pill " data-nav href="services.html"><span>Услуги</span></a>
       <a class="pill active" data-nav href="schedule.html"><span>Расписание</span></a>
-      <a class="pill mobile-only" data-nav href="prices.html"><span>Цены</span></a>
-      <a class="pill mobile-only" data-nav href="warmups.html"><span>Разминки</span></a>
-      <a class="pill mobile-only" data-nav href="reviews.html"><span>Отзывы</span></a>      <a class="pill " data-nav href="gallery.html"><span>Галерея</span></a>
-
       <a class="pill  cta" data-nav href="contacts.html"><span>Контакты</span></a>
     </nav>
   </div>
@@ -39,23 +35,75 @@
     
 <section class="card hero-card reveal">
   <div class="kicker"><span class="dot"></span><span>Расписание</span></div>
-  <h1>Актуальное расписание • Онлайн/оффлайн</h1>
+  <h1>Гибкое время • Онлайн</h1>
   <p class="sub">
-    Мои актуальные оффлайн классы и регулярная информация — по ссылке в Telegram‑канале.
+    Точное время согласуем в Telegram — под твой часовой пояс и нагрузку.
+    Ниже — примерная сетка, чтобы было удобно ориентироваться.
   </p>
   <div class="btnrow">
-    <a class="btn primary"  data-tg="chat" href="https://t.me/DMITRY_BLACK?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%2C%20DMITRY_BLACK%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BD%D0%B0%20%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD/%D0%BE%D1%84%D1%84%D0%BB%D0%B0%D0%B9%D0%BD-%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B5.%0A%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%3A%20%28%D0%B8%D0%BD%D0%B4%D0%B8%D0%B2%D0%B8%D0%B4%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE/%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B0%29%0A%D0%A1%D1%82%D0%B8%D0%BB%D1%8C%3A%20%28HIP-%D0%9D%D0%9E%D0%A0/%D0%BB%D0%B0%D1%82%D0%B8%D0%BD%D0%B0/%D1%81%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F%29%0A%D0%93%D0%BE%D1%80%D0%BE%D0%B4/%D1%87%D0%B0%D1%81%D0%BE%D0%B2%D0%BE%D0%B9%20%D0%BF%D0%BE%D1%8F%D1%81%3A%20...%0A%D0%A3%D0%B4%D0%BE%D0%B1%D0%BD%D1%8B%D0%B5%20%D0%B4%D0%BD%D0%B8%20%D0%B8%20%D0%B2%D1%80%D0%B5%D0%BC%D1%8F%3A%20..." target="_blank" rel="noopener">
-      <span>Уточнить время и запись</span> <span aria-hidden="true">→</span>
-    </a>
-    <a class="btn ghost"  data-tg="chat" href="https://t.me/DMITRY_BLACK" target="_blank" rel="noopener">
-      <span>Открыть Telegram‑канал</span> <span aria-hidden="true">→</span>
+    <a class="btn primary" href="https://t.me/Dmitry_DMB" target="_blank" rel="noopener">
+      <span>Уточнить свободные слоты</span> <span aria-hidden="true">→</span>
     </a>
     <a class="btn ghost" href="contacts.html"><span>Контакты</span><span aria-hidden="true">↗</span></a>
   </div>
 </section>
 
 <section class="section">
-<div class="section-title reveal" style="margin-top:18px">
+  <div class="section-title reveal">
+    <h2>Примерная сетка недели</h2>
+    <div class="hint">Можно адаптировать под тебя</div>
+  </div>
+
+  <div class="card reveal" style="padding: 10px 12px">
+    <table class="table" aria-label="Расписание">
+      <thead>
+        <tr>
+          <th>День</th>
+          <th>Слоты</th>
+          <th>Формат</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Пн</td>
+          <td>19:00 – 22:00</td>
+          <td>Индивидуально / мини‑группа</td>
+        </tr>
+        <tr>
+          <td>Вт</td>
+          <td>18:00 – 21:00</td>
+          <td>Группа • латина / современная</td>
+        </tr>
+        <tr>
+          <td>Ср</td>
+          <td>19:00 – 22:00</td>
+          <td>Индивидуально • HIP‑HOP</td>
+        </tr>
+        <tr>
+          <td>Чт</td>
+          <td>18:00 – 21:00</td>
+          <td>Группа • микс</td>
+        </tr>
+        <tr>
+          <td>Пт</td>
+          <td>19:00 – 22:00</td>
+          <td>Индивидуально / мини‑группа</td>
+        </tr>
+        <tr>
+          <td>Сб</td>
+          <td>12:00 – 16:00</td>
+          <td>Мастер‑класс / постановка</td>
+        </tr>
+        <tr>
+          <td>Вс</td>
+          <td>Выходной / по запросу</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title reveal" style="margin-top:18px">
     <h2>Важно</h2>
     <div class="hint">Чтобы всё прошло идеально</div>
   </div>
@@ -77,9 +125,9 @@
 <footer>
   <div class="container foot">
     <div class="small">© <span id="y"></span> DMITRY_BLACK • Онлайн-хорео • Танцы & фитнес</div>
-    <div class="btnrow footer-links">
-      <a class="pill"  data-tg="chat" href="https://t.me/DMITRY_BLACK?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%2C%20DMITRY_BLACK%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BD%D0%B0%20%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD/%D0%BE%D1%84%D1%84%D0%BB%D0%B0%D0%B9%D0%BD-%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B5.%0A%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%3A%20%28%D0%B8%D0%BD%D0%B4%D0%B8%D0%B2%D0%B8%D0%B4%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE/%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B0%29%0A%D0%A1%D1%82%D0%B8%D0%BB%D1%8C%3A%20%28HIP-%D0%9D%D0%9E%D0%A0/%D0%BB%D0%B0%D1%82%D0%B8%D0%BD%D0%B0/%D1%81%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F%29%0A%D0%93%D0%BE%D1%80%D0%BE%D0%B4/%D1%87%D0%B0%D1%81%D0%BE%D0%B2%D0%BE%D0%B9%20%D0%BF%D0%BE%D1%8F%D1%81%3A%20...%0A%D0%A3%D0%B4%D0%BE%D0%B1%D0%BD%D1%8B%D0%B5%20%D0%B4%D0%BD%D0%B8%20%D0%B8%20%D0%B2%D1%80%D0%B5%D0%BC%D1%8F%3A%20..." target="_blank" rel="noopener"><span>Запись в Telegram</span></a>
-      <a class="pill"  data-tg="chat" href="https://t.me/DMITRY_BLACK" target="_blank" rel="noopener"><span>Telegram-канал</span></a>
+    <div class="small">
+      <a class="pill" href="https://t.me/Dmitry_DMB" target="_blank" rel="noopener"><span>Запись в Telegram</span></a>
+      <a class="pill" href="https://t.me/Dance_Group_BLACK" target="_blank" rel="noopener"><span>Telegram-канал</span></a>
     </div>
   </div>
 </footer>
