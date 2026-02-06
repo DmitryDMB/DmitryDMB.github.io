@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Галерея — DMITRY_BLACK</title>
+  <link rel="icon" href="favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Главная">
+      <img src="logo.png" alt="BLACK DANCE" />
+    </a>
+
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="nav">
+      <a class="pill " data-nav href="index.html"><span>Главная</span></a>
+      <a class="pill " data-nav href="about.html"><span>Обо мне</span></a>
+      <a class="pill " data-nav href="services.html"><span>Услуги</span></a>
+      <a class="pill " data-nav href="prices.html"><span>Цены</span></a>
+      <a class="pill " data-nav href="schedule.html"><span>Запись</span></a>
+      <a class="pill " data-nav href="warmups.html"><span>Разминки</span></a>
+      <a class="pill " data-nav href="reviews.html"><span>Отзывы</span></a>
+      <a class="pill is-active" data-nav href="gallery.html"><span>Галерея</span></a>
+      <a class="pill " data-nav href="contacts.html"><span>Контакты</span></a>
+      <a class="pill cta" data-tg="chat"  href="https://t.me/DMITRY_BLACK"><span>Написать в Telegram</span><span class="arrow">→</span></a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="card">
+      <div class="kicker"><span class="dot">•</span>ГАЛЕРЕЯ</div>
+      <h1 class="title">Фото и видео с занятий</h1>
+      <p class="muted">Здесь — атмосфера тренировок, групповые занятия и постановки. Видео добавлю чуть позже.</p>
+
+      <div class="gallery-grid">
+        <figure class="gallery-item">
+          <picture>
+            <source srcset="assets/gallery/class_01.webp" type="image/webp" />
+            <img src="assets/gallery/class_01.jpg" alt="Групповое фото после занятия" loading="lazy" />
+          </picture>
+        </figure>
+
+        <figure class="gallery-item">
+          <picture>
+            <source srcset="assets/gallery/class_02.webp" type="image/webp" />
+            <img src="assets/gallery/class_02.jpg" alt="Групповое фото после занятия (крупнее)" loading="lazy" />
+          </picture>
+        </figure>
+
+        <figure class="gallery-item">
+          <picture>
+            <source srcset="assets/gallery/class_03.webp" type="image/webp" />
+            <img src="assets/gallery/class_03.jpg" alt="Тренировка в зале" loading="lazy" />
+          </picture>
+        </figure>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="video-box">
+        <div class="kicker"><span class="dot">•</span>ВИДЕО</div>
+        <p class="muted">Пришли видео — добавлю сюда (mp4).</p>
+      </div>
+
+      <div class="btnrow">
+        <a class="btn primary" data-tg="chat"  href="https://t.me/DMITRY_BLACK">Записаться в Telegram <span class="arrow">→</span></a>
+        <a class="btn ghost" data-tg="channel"  href="https://t.me/DMITRY_BLACK">Telegram-канал <span class="arrow">→</span></a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>© 2026 DMITRY_BLACK • Онлайн-хорео • Танцы &amp; фитнес</div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

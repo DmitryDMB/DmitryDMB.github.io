@@ -1,4 +1,31 @@
 
+// Telegram deep-link helper (better on iOS)
+function openTelegramLink(href){
+  try{
+    const u = new URL(href, window.location.href);
+    const domain = u.pathname.replace(/^\//,'').split('/')[0];
+    const text = u.searchParams.get('text');
+    let deep = 'tg://resolve?domain=' + encodeURIComponent(domain);
+    if(text){ deep += '&text=' + encodeURIComponent(text); }
+    // try app
+    window.location.href = deep;
+    // fallback to web
+    setTimeout(function(){ window.open(href, '_blank', 'noopener'); }, 600);
+  }catch(e){
+    window.open(href, '_blank', 'noopener');
+  }
+}
+
+document.addEventListener('click', function(e){
+  const a = e.target && e.target.closest ? e.target.closest('a[data-tg]') : null;
+  if(!a) return;
+  const href = a.getAttribute('href');
+  if(!href) return;
+  e.preventDefault();
+  openTelegramLink(href);
+});
+
+
 // Simple reveal-on-scroll animation
 const items = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries)=>{
