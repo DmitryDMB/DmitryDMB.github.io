@@ -54,7 +54,8 @@
 
   <div class="grid gallery-grid">
     <figure class="card tile reveal">
-      <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-1.webp" aria-label="Открыть фото 1">
+      <!-- В lightbox открываем JPG (максимальная совместимость), WebP остаётся для превью через <picture> -->
+      <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-1.jpg" aria-label="Открыть фото 1">
         <picture class="media-thumb">
           <source srcset="gallery/photo-1.webp" type="image/webp" />
           <img class="media-thumb" src="gallery/photo-1.jpg" alt="Фото 1" loading="lazy" />
@@ -63,7 +64,7 @@
     </figure>
 
     <figure class="card tile reveal">
-      <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-2.webp" aria-label="Открыть фото 2">
+      <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-2.jpg" aria-label="Открыть фото 2">
         <picture class="media-thumb">
           <source srcset="gallery/photo-2.webp" type="image/webp" />
           <img class="media-thumb" src="gallery/photo-2.jpg" alt="Фото 2" loading="lazy" />
@@ -72,7 +73,7 @@
     </figure>
 
     <figure class="card tile reveal">
-      <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-3.webp" aria-label="Открыть фото 3">
+      <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-3.jpg" aria-label="Открыть фото 3">
         <picture class="media-thumb">
           <source srcset="gallery/photo-3.webp" type="image/webp" />
           <img class="media-thumb" src="gallery/photo-3.jpg" alt="Фото 3" loading="lazy" />
@@ -80,6 +81,7 @@
       </button>
     </figure>
   
+  </div>
 </section>
 
 <section class="section">
@@ -159,6 +161,7 @@
       </button>
     </div>
   
+  </div>
 </section>
 
 <section class="section">
