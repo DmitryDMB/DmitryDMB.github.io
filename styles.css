@@ -642,15 +642,37 @@ footer{
   background: rgba(0,0,0,.20);
 }
 .video-box{
+  position:relative;
   border-radius:18px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.20);
+  aspect-ratio: 16 / 9;
 }
 .media-video{
   width:100%;
-  height:auto;
+  height:100%;
   display:block;
+  object-fit: cover;
+}
+
+.play-ico{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:54px;
+  height:54px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.22);
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  pointer-events:none;
 }
 
 

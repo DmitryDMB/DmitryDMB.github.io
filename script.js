@@ -285,10 +285,14 @@ function renderPublic(items){
     let el;
     if(kind === 'video'){
       el = document.createElement('video');
-      el.src = src;
       el.controls = true;
       el.autoplay = true;
       el.playsInline = true;
+      el.preload = 'auto';
+      const s = document.createElement('source');
+      s.src = src;
+      s.type = 'video/mp4';
+      el.appendChild(s);
     } else {
       el = document.createElement('img');
       el.src = src;
@@ -300,6 +304,12 @@ function renderPublic(items){
     box.setAttribute('aria-hidden','false');
     // lock scroll
     document.body.style.overflow = 'hidden';
+
+    // best-effort play for iOS
+    if(kind === 'video'){
+      const p = el.play();
+      if(p && p.catch) p.catch(()=>{});
+    }
   };
 
   const close = ()=>{
