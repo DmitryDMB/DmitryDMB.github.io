@@ -3,81 +3,136 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Галерея — DMITRY_BLACK</title>
-  <link rel="icon" href="favicon.png" />
+  <title>DMITRY_BLACK — Галерея</title>
+  <meta name="description" content="DMITRY_BLACK — портфолио: фото и видео с занятий (HIP-HOP, латиноамериканские ритмы, современная хореография)." />
+  <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Главная">
-      <img src="logo.png" alt="BLACK DANCE" />
+
+<header>
+  <div class="container nav navstack">
+    <a class="brand" href="index.html" aria-label="DMITRY_BLACK">
+      <img class="logo" src="logo.png" alt="DMITRY_BLACK" />
     </a>
 
-    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav">
       <span></span><span></span><span></span>
     </button>
 
-    <nav class="nav" id="nav">
+    <nav id="site-nav" class="navlinks" aria-label="Навигация">
       <a class="pill " data-nav href="index.html"><span>Главная</span></a>
       <a class="pill " data-nav href="about.html"><span>Обо мне</span></a>
       <a class="pill " data-nav href="services.html"><span>Услуги</span></a>
-      <a class="pill " data-nav href="prices.html"><span>Цены</span></a>
-      <a class="pill " data-nav href="schedule.html"><span>Запись</span></a>
-      <a class="pill " data-nav href="warmups.html"><span>Разминки</span></a>
-      <a class="pill " data-nav href="reviews.html"><span>Отзывы</span></a>
-      <a class="pill is-active" data-nav href="gallery.html"><span>Галерея</span></a>
-      <a class="pill " data-nav href="contacts.html"><span>Контакты</span></a>
-      <a class="pill cta" data-tg="chat"  href="https://t.me/DMITRY_BLACK"><span>Написать в Telegram</span><span class="arrow">→</span></a>
+      <a class="pill " data-nav href="schedule.html"><span>Расписание</span></a>
+      <a class="pill mobile-only" data-nav href="prices.html"><span>Цены</span></a>
+      <a class="pill mobile-only" data-nav href="warmups.html"><span>Разминки</span></a>
+      <a class="pill mobile-only active" data-nav href="gallery.html"><span>Галерея</span></a>
+      <a class="pill mobile-only" data-nav href="reviews.html"><span>Отзывы</span></a>
+      <a class="pill  cta" data-nav href="contacts.html"><span>Контакты</span></a>
     </nav>
-  </header>
+  </div>
+</header>
 
-  <main class="page">
-    <section class="card">
-      <div class="kicker"><span class="dot">•</span>ГАЛЕРЕЯ</div>
-      <h1 class="title">Фото и видео с занятий</h1>
-      <p class="muted">Здесь — атмосфера тренировок, групповые занятия и постановки. Видео добавлю чуть позже.</p>
+<main>
+  <div class="container">
 
-      <div class="gallery-grid">
-        <figure class="gallery-item">
-          <picture>
-            <source srcset="assets/gallery/class_01.webp" type="image/webp" />
-            <img src="assets/gallery/class_01.jpg" alt="Групповое фото после занятия" loading="lazy" />
-          </picture>
-        </figure>
+<section class="card hero-card reveal">
+  <div class="kicker"><span class="dot"></span><span>Галерея</span></div>
+  <h1>Портфолио: фото и видео</h1>
+  <p class="sub">
+    Здесь — материалы с занятий и выступлений. Я оставил аккуратные «плейсхолдеры»,
+    чтобы страница выглядела нормально даже до загрузки контента.
+  </p>
+  <div class="card" style="background:rgba(0,0,0,.22); border-style:dashed">
+    <p class="sub" style="margin:0">
+      Чтобы подставить свои материалы: положи файлы в папку <strong>gallery/</strong> и обнови ссылки в этом файле.
+      Примеры имён: <code>gallery/photo-1.jpg</code>, <code>gallery/video-1.mp4</code>.
+    </p>
+  </div>
+</section>
 
-        <figure class="gallery-item">
-          <picture>
-            <source srcset="assets/gallery/class_02.webp" type="image/webp" />
-            <img src="assets/gallery/class_02.jpg" alt="Групповое фото после занятия (крупнее)" loading="lazy" />
-          </picture>
-        </figure>
+<section class="section">
+  <div class="section-title reveal">
+    <h2>Фото</h2>
+    <div class="hint">Моменты с тренировок</div>
+  </div>
 
-        <figure class="gallery-item">
-          <picture>
-            <source srcset="assets/gallery/class_03.webp" type="image/webp" />
-            <img src="assets/gallery/class_03.jpg" alt="Тренировка в зале" loading="lazy" />
-          </picture>
-        </figure>
-      </div>
+  <div class="grid gallery-grid">
+    <figure class="card tile reveal">
+      <img class="media-thumb" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='800'%20height='520'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%2322d3ee'/%3E%3Cstop%20offset='1'%20stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='100%25'%20height='100%25'%20rx='24'%20fill='url(%23g)'%20opacity='0.25'/%3E%3Ctext%20x='50%25'%20y='50%25'%20dominant-baseline='middle'%20text-anchor='middle'%20fill='%23ffffff'%20font-family='Arial'%20font-size='44'%20opacity='0.9'%3E%D0%A4%D0%BE%D1%82%D0%BE%201%3C/text%3E%3C/svg%3E" alt="Фото 1 (замени на своё)" loading="lazy" />
+      <figcaption class="meta" style="margin-top:10px">Фото 1 — замени на своё</figcaption>
+    </figure>
 
-      <div class="spacer"></div>
+    <figure class="card tile reveal">
+      <img class="media-thumb" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='800'%20height='520'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='1'%20x2='1'%20y2='0'%3E%3Cstop%20offset='0'%20stop-color='%23a3e635'/%3E%3Cstop%20offset='1'%20stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='100%25'%20height='100%25'%20rx='24'%20fill='url(%23g)'%20opacity='0.22'/%3E%3Ctext%20x='50%25'%20y='50%25'%20dominant-baseline='middle'%20text-anchor='middle'%20fill='%23ffffff'%20font-family='Arial'%20font-size='44'%20opacity='0.9'%3E%D0%A4%D0%BE%D1%82%D0%BE%202%3C/text%3E%3C/svg%3E" alt="Фото 2 (замени на своё)" loading="lazy" />
+      <figcaption class="meta" style="margin-top:10px">Фото 2 — замени на своё</figcaption>
+    </figure>
 
+    <figure class="card tile reveal">
+      <img class="media-thumb" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='800'%20height='520'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23f472b6'/%3E%3Cstop%20offset='1'%20stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='100%25'%20height='100%25'%20rx='24'%20fill='url(%23g)'%20opacity='0.22'/%3E%3Ctext%20x='50%25'%20y='50%25'%20dominant-baseline='middle'%20text-anchor='middle'%20fill='%23ffffff'%20font-family='Arial'%20font-size='44'%20opacity='0.9'%3E%D0%A4%D0%BE%D1%82%D0%BE%203%3C/text%3E%3C/svg%3E" alt="Фото 3 (замени на своё)" loading="lazy" />
+      <figcaption class="meta" style="margin-top:10px">Фото 3 — замени на своё</figcaption>
+    </figure>
+
+    <figure class="card tile reveal">
+      <img class="media-thumb" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='800'%20height='520'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='1'%20x2='1'%20y2='0'%3E%3Cstop%20offset='0'%20stop-color='%2322d3ee'/%3E%3Cstop%20offset='1'%20stop-color='%23a3e635'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='100%25'%20height='100%25'%20rx='24'%20fill='url(%23g)'%20opacity='0.22'/%3E%3Ctext%20x='50%25'%20y='50%25'%20dominant-baseline='middle'%20text-anchor='middle'%20fill='%23ffffff'%20font-family='Arial'%20font-size='44'%20opacity='0.9'%3E%D0%A4%D0%BE%D1%82%D0%BE%204%3C/text%3E%3C/svg%3E" alt="Фото 4 (замени на своё)" loading="lazy" />
+      <figcaption class="meta" style="margin-top:10px">Фото 4 — замени на своё</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title reveal">
+    <h2>Видео</h2>
+    <div class="hint">Фрагменты занятий</div>
+  </div>
+
+  <div class="grid gallery-grid">
+    <div class="card tile reveal">
       <div class="video-box">
-        <div class="kicker"><span class="dot">•</span>ВИДЕО</div>
-        <p class="muted">Пришли видео — добавлю сюда (mp4).</p>
+        <video class="media-video" controls preload="metadata">
+          <source src="gallery/video-1.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
       </div>
+      <div class="meta" style="margin-top:10px">Видео 1 — файл: <code>gallery/video-1.mp4</code></div>
+    </div>
 
-      <div class="btnrow">
-        <a class="btn primary" data-tg="chat"  href="https://t.me/DMITRY_BLACK">Записаться в Telegram <span class="arrow">→</span></a>
-        <a class="btn ghost" data-tg="channel"  href="https://t.me/DMITRY_BLACK">Telegram-канал <span class="arrow">→</span></a>
+    <div class="card tile reveal">
+      <div class="video-box">
+        <video class="media-video" controls preload="metadata">
+          <source src="gallery/video-2.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
       </div>
-    </section>
+      <div class="meta" style="margin-top:10px">Видео 2 — файл: <code>gallery/video-2.mp4</code></div>
+    </div>
+  </div>
+</section>
 
-    <footer class="footer">
-      <div>© 2026 DMITRY_BLACK • Онлайн-хорео • Танцы &amp; фитнес</div>
-    </footer>
-  </main>
+<section class="section">
+  <div class="card reveal">
+    <h3 style="margin:0 0 8px">Хочешь попасть в галерею?</h3>
+    <p class="sub" style="margin:0">
+      Приходи на занятие — снимем фрагмент, который захочется пересматривать 🙂
+    </p>
+    <div class="btnrow" style="margin-top:14px">
+      <a class="btn primary" href="https://t.me/Dmitry_DMB" target="_blank" rel="noopener"><span>Написать в Telegram</span><span aria-hidden="true">→</span></a>
+      <a class="btn" href="services.html"><span>Смотреть услуги</span><span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot">© <span id="y"></span> DMITRY_BLACK • Танец • Энергия • Стиль</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
