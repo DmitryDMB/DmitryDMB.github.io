@@ -44,12 +44,6 @@
     Здесь — материалы с занятий и выступлений. Я оставил аккуратные «плейсхолдеры»,
     чтобы страница выглядела нормально даже до загрузки контента.
   </p>
-  <div class="card" style="background:rgba(0,0,0,.22); border-style:dashed">
-    <p class="sub" style="margin:0">
-      Чтобы подставить свои материалы: положи файлы в папку <strong>gallery/</strong> и обнови ссылки в этом файле.
-      Примеры имён: <code>gallery/photo-1.jpg</code>, <code>gallery/video-1.mp4</code>.
-    </p>
-  </div>
 </section>
 
 <section class="section">
@@ -61,19 +55,28 @@
   <div class="grid gallery-grid">
     <figure class="card tile reveal">
       <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-1.webp" aria-label="Открыть фото 1">
-        <img class="media-thumb" src="gallery/photo-1.webp" alt="Фото 1" loading="lazy" />
+        <picture class="media-thumb">
+          <source srcset="gallery/photo-1.webp" type="image/webp" />
+          <img class="media-thumb" src="gallery/photo-1.jpg" alt="Фото 1" loading="lazy" />
+        </picture>
       </button>
     </figure>
 
     <figure class="card tile reveal">
       <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-2.webp" aria-label="Открыть фото 2">
-        <img class="media-thumb" src="gallery/photo-2.webp" alt="Фото 2" loading="lazy" />
+        <picture class="media-thumb">
+          <source srcset="gallery/photo-2.webp" type="image/webp" />
+          <img class="media-thumb" src="gallery/photo-2.jpg" alt="Фото 2" loading="lazy" />
+        </picture>
       </button>
     </figure>
 
     <figure class="card tile reveal">
       <button class="media-open" type="button" data-kind="image" data-src="gallery/photo-3.webp" aria-label="Открыть фото 3">
-        <img class="media-thumb" src="gallery/photo-3.webp" alt="Фото 3" loading="lazy" />
+        <picture class="media-thumb">
+          <source srcset="gallery/photo-3.webp" type="image/webp" />
+          <img class="media-thumb" src="gallery/photo-3.jpg" alt="Фото 3" loading="lazy" />
+        </picture>
       </button>
     </figure>
   
