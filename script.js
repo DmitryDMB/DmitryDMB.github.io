@@ -270,3 +270,73 @@ function renderPublic(items){
     }
   });
 })();
+
+
+// Gallery: hover/autoplay previews + lightbox
+(function(){
+  const box = document.getElementById('lightbox');
+  const inner = document.getElementById('lbInner');
+  const closeBtn = document.getElementById('lbClose');
+  const triggers = document.querySelectorAll('.media-open[data-kind][data-src]');
+  if(!box || !inner || !closeBtn || !triggers.length) return;
+
+  const open = (kind, src)=>{
+    inner.innerHTML = '';
+    let el;
+    if(kind === 'video'){
+      el = document.createElement('video');
+      el.src = src;
+      el.controls = true;
+      el.autoplay = true;
+      el.playsInline = true;
+    } else {
+      el = document.createElement('img');
+      el.src = src;
+      el.alt = '';
+      el.loading = 'eager';
+    }
+    inner.appendChild(el);
+    box.classList.add('on');
+    box.setAttribute('aria-hidden','false');
+    // lock scroll
+    document.body.style.overflow = 'hidden';
+  };
+
+  const close = ()=>{
+    box.classList.remove('on');
+    box.setAttribute('aria-hidden','true');
+    inner.innerHTML = '';
+    document.body.style.overflow = '';
+  };
+
+  triggers.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      open(btn.dataset.kind, btn.dataset.src);
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  box.addEventListener('click', (e)=>{
+    if(e.target === box) close();
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') close();
+  });
+
+  // Autoplay muted previews when visible (best-effort)
+  const previews = document.querySelectorAll('video.media-preview');
+  if(previews.length){
+    const vio = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        const v = en.target;
+        if(en.isIntersecting){
+          const p = v.play();
+          if(p && p.catch) p.catch(()=>{});
+        } else {
+          v.pause();
+        }
+      });
+    }, {threshold: 0.25});
+    previews.forEach(v=>vio.observe(v));
+  }
+})();
