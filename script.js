@@ -350,3 +350,35 @@ function renderPublic(items){
     previews.forEach(v=>vio.observe(v));
   }
 })();
+
+
+/* gallery-video-thumb-fix */
+document.addEventListener('DOMContentLoaded', () => {
+  const vids = document.querySelectorAll('video.gallery-video');
+  vids.forEach(v => {
+    const trySeek = () => {
+      try {
+        const t = 0.1;
+        if (isFinite(v.duration) && v.duration > t) v.currentTime = t;
+        else v.currentTime = 0;
+      } catch (e) {}
+    };
+
+    v.addEventListener('loadedmetadata', trySeek, { once: true });
+
+    if (v.readyState >= 1) {
+      trySeek();
+    } else {
+      try { v.load(); } catch (e) {}
+    }
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(ent => {
+          if (ent.isIntersecting) trySeek();
+        });
+      }, { threshold: 0.25 });
+      io.observe(v);
+    }
+  });
+});
