@@ -206,7 +206,7 @@ function renderPublic(items){
 
   function buildText(data){
     const lines = [
-      'Отзыв для DMITRY_BLACK',
+      'Отзыв для Dmitry Black',
       `Имя: ${data.name}`,
       data.city ? `Город/часовой пояс: ${data.city}` : null,
       `Оценка: ${data.rating}/5`,
