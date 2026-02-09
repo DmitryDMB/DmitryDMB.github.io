@@ -14,8 +14,15 @@ items.forEach(i=>io.observe(i));
 // Active link helper (fallback if no server-side)
 (function(){
   const path = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('[data-nav]').forEach(a=>{
-    if(a.getAttribute('href') === path) a.classList.add('active');
+  const links = document.querySelectorAll('[data-nav]');
+  // remove any hardcoded active states and set correct one by current filename
+  links.forEach(a=>a.classList.remove('active'));
+  links.forEach(a=>{
+    const href = (a.getAttribute('href') || '').trim();
+    if(!href) return;
+    // ignore hashes/query params when matching
+    const clean = href.split('#')[0].split('?')[0];
+    if(clean === path) a.classList.add('active');
   });
 })();
 
