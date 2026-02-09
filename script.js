@@ -366,8 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const trySeek = () => {
       try {
         const t = 0.1;
-        if (isFinite(v.duration) && v.duration > t) v.currentTime = t;
-        else v.currentTime = 0;
+// disabled preview trim
+// disabled preview trim
       } catch (e) {}
     };
 
