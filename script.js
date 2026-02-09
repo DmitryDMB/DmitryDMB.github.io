@@ -298,7 +298,8 @@ function renderPublic(items){
       el.preload = 'auto';
       const s = document.createElement('source');
       s.src = src;
-      s.type = 'video/mp4';
+      const ext = (src.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+      s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
       el.appendChild(s);
     } else {
       el = document.createElement('img');
