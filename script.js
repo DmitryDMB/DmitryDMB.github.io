@@ -291,7 +291,9 @@ function renderPublic(items){
   // Работает и для новых карточек, если их добавят с таким же классом.
   document.querySelectorAll('.gallery-grid .play-ico').forEach(el => el.remove());
 
-  const open = (kind, src)=>{
+  const open = (kind, src, partsCsv)=>{
+    const parts = (partsCsv||'').split(',').map(s=>s.trim()).filter(Boolean);
+    let partIndex = 0;
     inner.innerHTML = '';
     let el;
     if(kind === 'video'){
@@ -305,10 +307,31 @@ function renderPublic(items){
       el.volume = 1;
 
       const s = document.createElement('source');
-      s.src = src;
-      const ext = (src.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+      s.src = (parts.length ? parts[0] : src);
+      const ext = ((parts.length ? parts[0] : src).split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
       s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
       el.appendChild(s);
+
+      // If the video is split into parts (<25MB each for GitHub web upload),
+      // play them sequentially in the lightbox as one clip.
+      if(parts.length > 1){
+        el.addEventListener('ended', ()=>{
+          partIndex += 1;
+          if(partIndex >= parts.length) return;
+
+          while(el.firstChild) el.removeChild(el.firstChild);
+          const s2 = document.createElement('source');
+          s2.src = parts[partIndex];
+          const ext2 = (s2.src.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+          s2.type = ext2 === 'mov' ? 'video/quicktime' : 'video/mp4';
+          el.appendChild(s2);
+
+          try{ el.load(); }catch(e){}
+          const p2 = el.play();
+          if(p2 && p2.catch) p2.catch(()=>{});
+        });
+      }
+
       // Playback in lightbox should be full-length with sound.
       // (No extra watchdog timers that could stop playback early.)
     } else {
@@ -346,7 +369,7 @@ function renderPublic(items){
 
   triggers.forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      open(btn.dataset.kind, btn.dataset.src);
+      open(btn.dataset.kind, btn.dataset.src, btn.dataset.parts);
     });
   });
 
