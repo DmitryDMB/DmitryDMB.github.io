@@ -702,6 +702,28 @@ footer{
   border-color: rgba(255,255,255,.22);
 }
 
+/* Убираем "линии"/полосы между элементами галереи на телефонах:
+   - убираем gap и внутренние отступы карточек
+   - снимаем скругления и рамки у превью, чтобы блоки стыковались без артефактов */
+@media (max-width: 720px){
+  .gallery-grid{gap:0; margin-top:14px;}
+  .gallery-grid .card,
+  .gallery-grid .tile{
+    padding:0;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+  }
+  .gallery-grid .media-open{display:block;}
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{
+    border:0;
+    border-radius:0;
+    background:transparent;
+  }
+}
+
 /* Lightbox */
 .lightbox{
   position:fixed;
