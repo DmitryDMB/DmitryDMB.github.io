@@ -754,3 +754,26 @@ footer{
   object-fit: contain;
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.06), rgba(0,0,0,0.25));
 }
+
+
+/* === Gallery video fix for vertical videos === */
+.gallery-item {
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+}
+
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* Lightbox / fullscreen view */
+.lb-inner video {
+  width: 100%;
+  height: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  background: black;
+}
