@@ -311,6 +311,7 @@ function renderPublic(items){
         if(el.__dmbFinished) return;
         el.__dmbFinished = true;
         try{ el.pause(); }catch(e){}
+        try{ if(el.__dmbWatchId) clearInterval(el.__dmbWatchId); }catch(e){}
         try{
           if(Number.isFinite(el.duration) && el.duration > 0){
             // keep inside duration range for Safari
@@ -331,6 +332,51 @@ function renderPublic(items){
       el.addEventListener('timeupdate', nearEnd);
       el.addEventListener('stalled', nearEnd);
       el.addEventListener('suspend', nearEnd);
+      // Extra watchdog for iOS Safari:
+      // Sometimes the video renderer freezes near the end without firing "ended"/"stalled".
+      // We detect lack of time progression while audio may still be playing.
+      let __dmbLastT = 0;
+      let __dmbLastWall = performance.now();
+      const __dmbWatch = ()=>{
+        try{
+          if(el.__dmbFinished) return;
+          if(el.paused || el.ended) return;
+          const now = performance.now();
+          const t = el.currentTime || 0;
+          const dt = Math.abs(t - __dmbLastT);
+
+          // update progression marker
+          if(dt > 0.02){
+            __dmbLastT = t;
+            __dmbLastWall = now;
+            return;
+          }
+
+          // If we haven't progressed for a bit, and we're very close to the end -> finish.
+          const stuckMs = now - __dmbLastWall;
+          if(stuckMs < 700) return;
+
+          const d = el.duration;
+          if(Number.isFinite(d) && d > 0){
+            if(t >= d - 0.5) finish();
+          } else {
+            // duration unknown: use buffered range if available
+            try{
+              if(el.buffered && el.buffered.length){
+                const end = el.buffered.end(el.buffered.length-1);
+                if(t >= end - 0.5) finish();
+              }
+            }catch(e){}
+          }
+        }catch(e){}
+      };
+
+      el.__dmbWatchId = window.setInterval(__dmbWatch, 250);
+
+      // Clear watchdog when done
+      el.addEventListener('pause', ()=>{ try{ clearInterval(el.__dmbWatchId); }catch(e){} });
+      el.addEventListener('ended', ()=>{ try{ clearInterval(el.__dmbWatchId); }catch(e){} });
+
     } else {
       el = document.createElement('img');
       el.src = src;
@@ -353,6 +399,18 @@ function renderPublic(items){
   const close = ()=>{
     box.classList.remove('on');
     box.setAttribute('aria-hidden','true');
+    // stop any playing media before removing (important for iOS Safari)
+    const v = inner.querySelector('video');
+    if(v){
+      try{ v.pause(); }catch(e){}
+      try{ if(v.__dmbWatchId) clearInterval(v.__dmbWatchId); }catch(e){}
+      try{ v.removeAttribute('src'); }catch(e){}
+      try{
+        const ss = v.querySelectorAll('source');
+        ss.forEach(x=>x.remove());
+      }catch(e){}
+      try{ v.load(); }catch(e){}
+    }
     inner.innerHTML = '';
     document.body.style.overflow = '';
   };
