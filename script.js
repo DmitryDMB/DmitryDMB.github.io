@@ -181,7 +181,7 @@ function renderPublic(items){
   }
   function save(arr){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr.slice(0,20))); }catch(e){}
-  }
+    }
   function render(){
     if(!list) return;
     const items = load();
@@ -309,42 +309,8 @@ function renderPublic(items){
       const ext = (src.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
       s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
       el.appendChild(s);
-
-      // iOS/Safari sometimes doesn't dispatch 'ended' reliably; add a small near-end guard.
-      const NEAR_END = 0.35; // seconds
-      let watchdog = null;
-      let lastT = -1;
-      const stopHard = ()=>{
-        try{ el.pause(); }catch(e){}
-        try{
-          const d = el.duration;
-          if(Number.isFinite(d) && d > 0) el.currentTime = Math.max(0, d - 0.02);
-        }catch(e){}
-        if(watchdog){ clearInterval(watchdog); watchdog = null; }
-      };
-
-      el.addEventListener('ended', stopHard, { once: true });
-      el.addEventListener('error', stopHard);
-
-      el.addEventListener('loadedmetadata', ()=>{
-        if(watchdog) return;
-        watchdog = setInterval(()=>{
-          if(!el || !Number.isFinite(el.duration) || el.duration <= 0) return;
-          const t = el.currentTime || 0;
-          const d = el.duration || 0;
-
-          // if we're close to the end and time isn't moving, force-stop
-          if(d - t <= NEAR_END){
-            if(lastT >= 0 && Math.abs(t - lastT) < 0.001){
-              stopHard();
-            }
-          }
-          lastT = t;
-        }, 250);
-      }, { once: true });
-
-      // Ensure cleanup if user closes the lightbox while playing
-      el.__stopHard = stopHard;
+      // Playback in lightbox should be full-length with sound.
+      // (No extra watchdog timers that could stop playback early.)
     } else {
       el = document.createElement('img');
       el.src = src;
@@ -368,7 +334,6 @@ function renderPublic(items){
     // stop and unload any video to prevent iOS audio continuing in background
     const v = inner.querySelector('video');
     if(v){
-      try{ if(v.__stopHard) v.__stopHard(); }catch(e){}
       try{ v.removeAttribute('src'); }catch(e){}
       try{ v.load(); }catch(e){}
     }
