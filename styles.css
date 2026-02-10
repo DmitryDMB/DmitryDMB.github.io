@@ -675,6 +675,10 @@ footer{
   pointer-events:none;
 }
 
+/* В галерее не показываем значок «плей» поверх превью видео.
+   Это правило автоматически применяется и к новым видео, которые будут добавлены позже. */
+.gallery-grid .play-ico{ display:none !important; }
+
 
 /* --- Gallery interactions --- */
 .media-open{

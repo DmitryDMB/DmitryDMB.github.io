@@ -287,6 +287,10 @@ function renderPublic(items){
   const triggers = document.querySelectorAll('.media-open[data-kind][data-src]');
   if(!box || !inner || !closeBtn || !triggers.length) return;
 
+  // Убираем значок «плей» на превью видео в галерее.
+  // Работает и для новых карточек, если их добавят с таким же классом.
+  document.querySelectorAll('.gallery-grid .play-ico').forEach(el => el.remove());
+
   const open = (kind, src)=>{
     inner.innerHTML = '';
     let el;
