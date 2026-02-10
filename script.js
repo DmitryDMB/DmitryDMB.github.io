@@ -297,6 +297,8 @@ function renderPublic(items){
       el.playsInline = true;
       el.preload = 'auto';
       el.loop = false;
+      el.muted = false; // allow sound on user click
+
 
       const s = document.createElement('source');
       s.src = src;
@@ -437,11 +439,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-document.querySelectorAll('video').forEach(v=>{
-  v.addEventListener('click', ()=>{
-    v.muted = false;
-    v.controls = true;
-    v.requestFullscreen?.();
-    v.play();
+
+// CACHE-BUST VERSION: force autoplay previews (muted) on load
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('video.media-preview').forEach(v=>{
+    v.muted = true;
+    v.setAttribute('muted','');
+    v.setAttribute('playsinline','');
+    v.setAttribute('autoplay','');
+    v.preload = 'auto';
+    try {
+      const p = v.play();
+      if(p && p.catch) p.catch(()=>{});
+    } catch(e) {}
   });
 });
