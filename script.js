@@ -436,3 +436,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+document.querySelectorAll('video').forEach(v=>{
+  v.addEventListener('click', ()=>{
+    v.muted = false;
+    v.controls = true;
+    v.requestFullscreen?.();
+    v.play();
+  });
+});
