@@ -633,6 +633,44 @@ footer{
 
 /* --- Галерея --- */
 .gallery-grid{grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));}
+
+/* Плотнее и «дороже» выглядит, когда у фото/видео одинаковые ячейки */
+.gallery-grid{display:grid; gap:18px;}
+.gallery-grid .tile{
+  position:relative;
+  overflow:hidden;
+  border-radius:18px;
+  background: rgba(0,0,0,.22);
+}
+
+/* Фото: фиксируем визуальную высоту карточки через aspect-ratio */
+picture.media-thumb{
+  display:block;
+  width:100%;
+  aspect-ratio: 4 / 5;
+  overflow:hidden;
+}
+picture.media-thumb img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+/* Видео: лёгкая затемнённая подложка и знак play (в стиле сайта) */
+.video-box::after{
+  content:"▶";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:44px;
+  color:#fff;
+  background: linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.42));
+  opacity:.92;
+  pointer-events:none;
+}
+.gallery-grid .tile:hover .video-box::after{opacity:.78}
 .media-thumb{
   width:100%;
   height:auto;
@@ -700,6 +738,16 @@ footer{
 .gallery-grid .card:hover .media-thumb,
 .gallery-grid .card:hover .video-box{
   border-color: rgba(255,255,255,.22);
+}
+
+/* Лёгкий зум на hover — выглядит «живее», но не отвлекает */
+.gallery-grid .card:hover img,
+.gallery-grid .card:hover video{
+  transform: scale(1.06);
+}
+.gallery-grid img,
+.gallery-grid video{
+  transition: transform .55s ease;
 }
 
 /* Убираем "линии"/полосы между элементами галереи на телефонах:
