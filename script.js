@@ -436,29 +436,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
-
-// v1770730413: force autoplay previews when in view (helps iOS Safari)
-(function forcePreviewPlay(){
-  const vids = document.querySelectorAll('video.media-preview, video.gallery-video, video');
-  if(!vids.length) return;
-  const tryPlay = (v)=> {
-    try {
-      v.muted = true;
-      v.playsInline = true;
-      v.setAttribute('playsinline','');
-      v.autoplay = true;
-      v.loop = true;
-      const p = v.play();
-      if(p && typeof p.catch === 'function') p.catch(()=>{});
-    } catch(e) {}
-  };
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      const v = e.target;
-      if(e.isIntersecting) tryPlay(v);
-      else { try { v.pause(); } catch(e) {} }
-    });
-  }, { threshold: 0.15 });
-  vids.forEach(v=>io.observe(v));
-})();
