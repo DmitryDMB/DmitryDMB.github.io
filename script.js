@@ -304,13 +304,33 @@ function renderPublic(items){
       s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
       el.appendChild(s);
 
-      // Fix iOS/Safari edge-case: video can freeze on last frame while audio continues
-      el.addEventListener('ended', ()=>{
+      // Fix iOS/Safari edge-case:
+      // Some encodes can freeze on the last frame while audio continues.
+      // "ended" is not always fired reliably, so we also watch timeupdate.
+      const finish = ()=>{
+        if(el.__dmbFinished) return;
+        el.__dmbFinished = true;
+        try{ el.pause(); }catch(e){}
         try{
-          el.pause();
-          el.currentTime = el.duration;
+          if(Number.isFinite(el.duration) && el.duration > 0){
+            // keep inside duration range for Safari
+            el.currentTime = Math.max(0, el.duration - 0.001);
+          }
         }catch(e){}
-      });
+      };
+
+      const nearEnd = ()=>{
+        try{
+          if(el.seeking) return;
+          if(!Number.isFinite(el.duration) || el.duration <= 0) return;
+          if(el.currentTime >= el.duration - 0.15) finish();
+        }catch(e){}
+      };
+
+      el.addEventListener('ended', finish);
+      el.addEventListener('timeupdate', nearEnd);
+      el.addEventListener('stalled', nearEnd);
+      el.addEventListener('suspend', nearEnd);
     } else {
       el = document.createElement('img');
       el.src = src;
