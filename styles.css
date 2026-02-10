@@ -751,5 +751,14 @@ footer{
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.06), rgba(0,0,0,0.25));
 }
 
-/* Hide play icon overlay on preview videos */
-.video-box .play-ico{display:none!important;}
+
+
+/* --- video tweaks (autoplay previews) --- */
+.play-ico, .media-open .play-ico { display:none !important; }
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+video::-webkit-media-controls {
+  display:none !important;
+}

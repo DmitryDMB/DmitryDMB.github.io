@@ -297,8 +297,6 @@ function renderPublic(items){
       el.playsInline = true;
       el.preload = 'auto';
       el.loop = false;
-      el.muted = false; // allow sound on user click
-
 
       const s = document.createElement('source');
       s.src = src;
@@ -440,17 +438,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// CACHE-BUST VERSION: force autoplay previews (muted) on load
-document.addEventListener('DOMContentLoaded', ()=>{
-  document.querySelectorAll('video.media-preview').forEach(v=>{
-    v.muted = true;
-    v.setAttribute('muted','');
-    v.setAttribute('playsinline','');
-    v.setAttribute('autoplay','');
-    v.preload = 'auto';
+// v1770730413: force autoplay previews when in view (helps iOS Safari)
+(function forcePreviewPlay(){
+  const vids = document.querySelectorAll('video.media-preview, video.gallery-video, video');
+  if(!vids.length) return;
+  const tryPlay = (v)=> {
     try {
+      v.muted = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline','');
+      v.autoplay = true;
+      v.loop = true;
       const p = v.play();
-      if(p && p.catch) p.catch(()=>{});
+      if(p && typeof p.catch === 'function') p.catch(()=>{});
     } catch(e) {}
-  });
-});
+  };
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const v = e.target;
+      if(e.isIntersecting) tryPlay(v);
+      else { try { v.pause(); } catch(e) {} }
+    });
+  }, { threshold: 0.15 });
+  vids.forEach(v=>io.observe(v));
+})();
