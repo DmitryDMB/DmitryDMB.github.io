@@ -301,6 +301,8 @@ function renderPublic(items){
       el.playsInline = true;
       el.preload = 'auto';
       el.loop = false;
+      el.muted = false;
+      el.volume = 1;
 
       const s = document.createElement('source');
       s.src = src;
