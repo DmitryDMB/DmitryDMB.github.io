@@ -296,11 +296,21 @@ function renderPublic(items){
       el.autoplay = true;
       el.playsInline = true;
       el.preload = 'auto';
+      el.loop = false;
+
       const s = document.createElement('source');
       s.src = src;
       const ext = (src.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
       s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
       el.appendChild(s);
+
+      // Fix iOS/Safari edge-case: video can freeze on last frame while audio continues
+      el.addEventListener('ended', ()=>{
+        try{
+          el.pause();
+          el.currentTime = el.duration;
+        }catch(e){}
+      });
     } else {
       el = document.createElement('img');
       el.src = src;
