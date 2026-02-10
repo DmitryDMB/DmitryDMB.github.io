@@ -926,3 +926,35 @@ footer{
   .gallery-grid .media-thumb,
   .gallery-grid .video-box{ border-radius: 22px !important; }
 }
+
+/* === Gallery frame FINAL: single frame only (matches reference) === */
+.gallery-grid{ gap: 18px !important; }
+.gallery-grid .tile{
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 34px !important;
+}
+.gallery-grid .tile::before{ display:none !important; }
+.gallery-grid .media-thumb,
+.gallery-grid .video-box{
+  border-radius: 34px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  background: rgba(255,255,255,.03) !important;
+  box-shadow: 0 18px 50px rgba(0,0,0,.60) !important;
+}
+
+/* Videos: show full frame like the first video (no aggressive crop) */
+.gallery-grid video.gallery-video{
+  object-fit: contain !important;
+  background: #000 !important;
+}
+
+@media (max-width: 720px){
+  .gallery-grid{ gap: 14px !important; }
+  .gallery-grid .tile{ border-radius: 28px !important; }
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{ border-radius: 28px !important; }
+}
