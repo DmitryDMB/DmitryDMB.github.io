@@ -311,6 +311,22 @@ function renderPublic(items){
     inner.innerHTML = '';
     let el;
     if(kind === 'video'){
+      // If a video is split into multiple files (to fit GitHub's web upload limit),
+      // hint the browser to start fetching the next parts early to avoid "sticking".
+      if(parts.length > 1){
+        try{
+          parts.slice(1).forEach(p=>{
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'video';
+            link.href = p;
+            const ext = (p.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+            link.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
+            document.head.appendChild(link);
+          });
+        }catch(e){}
+      }
+
       el = document.createElement('video');
       el.controls = true;
       el.autoplay = true;
