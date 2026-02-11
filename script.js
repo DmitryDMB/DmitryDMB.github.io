@@ -309,6 +309,11 @@ function renderPublic(items){
       v.controls = true;              // в большом просмотре удобно оставить управление
       v.autoplay = true;
       v.playsInline = true;
+      // iOS Safari: дополнительно просим воспроизводить inline,
+      // иначе вертикальные видео часто уходят в "native fullscreen",
+      // где нет нашей кнопки закрытия.
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
       v.preload = 'auto';
       v.loop = false;
       v.muted = false;

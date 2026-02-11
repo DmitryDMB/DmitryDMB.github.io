@@ -757,6 +757,12 @@ footer{
 .lb-close{
   position:absolute;
   top:14px; right:16px;
+  /*
+    Важно для мобильных/вертикальных видео:
+    без z-index кнопка может оказаться под видео (из-за порядка слоёв),
+    поэтому «крестик» не видно и видео невозможно закрыть.
+  */
+  z-index: 10001;
   width:44px; height:44px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.18);
