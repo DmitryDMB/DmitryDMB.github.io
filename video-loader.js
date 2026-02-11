@@ -1,9 +1,11 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Try to insert into an existing gallery container if present, otherwise append to body.
+  // Try to find gallery container on gallery.html
   const gallery =
     document.querySelector("#gallery") ||
     document.querySelector(".gallery") ||
+    document.querySelector(".gallery-grid") ||
+    document.querySelector(".gallery-container") ||
     document.querySelector("[data-gallery]");
 
   const wrapper = document.createElement("div");
@@ -28,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wrapper.appendChild(video);
   wrapper.appendChild(status);
 
+  // Insert at the very bottom of gallery if found; otherwise append to body
   (gallery || document.body).appendChild(wrapper);
 
   const parts = ['video_part_01.bin', 'video_part_02.bin', 'video_part_03.bin', 'video_part_04.bin', 'video_part_05.bin', 'video_part_06.bin', 'video_part_07.bin', 'video_part_08.bin', 'video_part_09.bin'];
@@ -38,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i];
-      const res = await fetch("assets/video_parts/" + part, { cache: "force-cache" });
+      const res = await fetch("./" + part, { cache: "force-cache" });
       if (!res.ok) throw new Error("Не удалось загрузить часть: " + part);
       const buf = await res.arrayBuffer();
       buffers.push(buf);
@@ -47,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
       status.textContent = "Загружено: " + (i+1) + "/" + parts.length + " (" + mb + " MB)";
     }
 
-    // Concatenate
     const total = buffers.reduce((s, b) => s + b.byteLength, 0);
     const tmp = new Uint8Array(total);
     let offset = 0;
@@ -56,8 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       offset += b.byteLength;
     }
 
-    // Original file is .mov (QuickTime). Most browsers play it in Safari; others may vary.
-    // If your site targets Chrome/Android, consider converting to mp4 instead.
+    // Original is MOV; Safari plays it reliably. If you need Chrome/Android support, convert to MP4.
     const blob = new Blob([tmp], { type: "video/quicktime" });
     video.src = URL.createObjectURL(blob);
     status.textContent = "";
