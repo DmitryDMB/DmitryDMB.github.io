@@ -1,53 +1,43 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Try to find gallery container on gallery.html
-  const gallery =
-    document.querySelector("#gallery") ||
-    document.querySelector(".gallery") ||
-    document.querySelector(".gallery-grid") ||
-    document.querySelector(".gallery-container") ||
-    document.querySelector("[data-gallery]");
+  // Find the gallery grid container (as in existing markup)
+  const grid = document.querySelector(".gallery-grid") || document.querySelector(".grid.gallery-grid");
+  if (!grid) {
+    console.warn("gallery grid not found");
+    return;
+  }
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "gallery-item gallery-video-item";
+  // Build card like other videos
+  const figure = document.createElement("figure");
+  figure.className = "card tile reveal";
+
+  const box = document.createElement("div");
+  box.className = "video-box";
+  // Portrait like the first video: 9:16
+  box.style.aspectRatio = "9 / 16";
 
   const video = document.createElement("video");
-  video.controls = true;
+  video.className = "media-video media-preview gallery-video";
+  video.autoplay = true;
+  video.loop = true;
+  video.muted = true;
   video.playsInline = true;
   video.preload = "metadata";
-  video.style.width = "100%";
-  video.style.maxWidth = "900px";
-  video.style.display = "block";
-  video.style.margin = "24px auto";
+  video.controls = false;
 
-  const status = document.createElement("div");
-  status.style.textAlign = "center";
-  status.style.opacity = "0.8";
-  status.style.fontSize = "14px";
-  status.style.margin = "8px 0 0";
-  status.textContent = "Загрузка видео…";
+  box.appendChild(video);
+  figure.appendChild(box);
 
-  wrapper.appendChild(video);
-  wrapper.appendChild(status);
-
-  // Insert at the very bottom of gallery if found; otherwise append to body
-  (gallery || document.body).appendChild(wrapper);
+  // Append to the VERY bottom of the gallery grid
+  grid.appendChild(figure);
 
   const parts = ['video_part_01.bin', 'video_part_02.bin', 'video_part_03.bin', 'video_part_04.bin', 'video_part_05.bin', 'video_part_06.bin', 'video_part_07.bin', 'video_part_08.bin', 'video_part_09.bin'];
 
   async function loadPartsToBlob() {
     const buffers = [];
-    let loaded = 0;
-
     for (let i = 0; i < parts.length; i++) {
-      const part = parts[i];
-      const res = await fetch("./" + part, { cache: "force-cache" });
-      if (!res.ok) throw new Error("Не удалось загрузить часть: " + part);
-      const buf = await res.arrayBuffer();
-      buffers.push(buf);
-      loaded += buf.byteLength;
-      const mb = (loaded / (1024*1024)).toFixed(1);
-      status.textContent = "Загружено: " + (i+1) + "/" + parts.length + " (" + mb + " MB)";
+      const res = await fetch("./" + parts[i], { cache: "force-cache" });
+      if (!res.ok) throw new Error("Не удалось загрузить часть: " + parts[i]);
+      buffers.push(await res.arrayBuffer());
     }
 
     const total = buffers.reduce((s, b) => s + b.byteLength, 0);
@@ -58,14 +48,35 @@ document.addEventListener("DOMContentLoaded", () => {
       offset += b.byteLength;
     }
 
-    // Original is MOV; Safari plays it reliably. If you need Chrome/Android support, convert to MP4.
     const blob = new Blob([tmp], { type: "video/quicktime" });
     video.src = URL.createObjectURL(blob);
-    status.textContent = "";
+
+    // Autoplay might be blocked; try play silently
+    const p = video.play();
+    if (p && p.catch) p.catch(() => {});
   }
 
   loadPartsToBlob().catch(err => {
     console.error(err);
-    status.textContent = "Ошибка загрузки видео: " + err.message;
+  });
+
+  // Make it behave like other videos when user taps:
+  // enable sound + controls + fullscreen
+  figure.addEventListener("click", () => {
+    try {
+      video.muted = false;
+      video.controls = true;
+      const p = video.play();
+      if (p && p.catch) p.catch(() => {});
+
+      const req =
+        video.requestFullscreen ||
+        video.webkitRequestFullscreen ||
+        video.mozRequestFullScreen ||
+        video.msRequestFullscreen;
+
+      if (req) req.call(video);
+      else if (typeof video.webkitEnterFullscreen === "function") video.webkitEnterFullscreen();
+    } catch (e) {}
   });
 });
