@@ -287,272 +287,120 @@ function renderPublic(items){
   const triggers = document.querySelectorAll('.media-open[data-kind][data-src]');
   if(!box || !inner || !closeBtn || !triggers.length) return;
 
-  // Try to enter fullscreen for video when user clicks a thumbnail.
-  // Works in most modern browsers; on iOS Safari falls back to webkitEnterFullscreen.
-  const tryFullscreen = (videoEl)=>{
-    if(!videoEl) return;
-    const req = videoEl.requestFullscreen
-      || videoEl.webkitRequestFullscreen
-      || videoEl.mozRequestFullScreen
-      || videoEl.msRequestFullscreen;
-    try{
-      if(req) return req.call(videoEl);
-      if(typeof videoEl.webkitEnterFullscreen === 'function') return videoEl.webkitEnterFullscreen();
-    }catch(e){}
-  };
-
   // Убираем значок «плей» на превью видео в галерее.
   // Работает и для новых карточек, если их добавят с таким же классом.
   document.querySelectorAll('.gallery-grid .play-ico').forEach(el => el.remove());
 
+  
   const open = (kind, src, partsCsv)=>{
     const parts = (partsCsv||'').split(',').map(s=>s.trim()).filter(Boolean);
-    let partIndex = 0;
     inner.innerHTML = '';
-    let el;
+
     if(kind === 'video'){
-      // If a video is split into multiple files (to fit GitHub's web upload limit),
-      // hint the browser to start fetching the next parts early to avoid "sticking".
-      if(parts.length > 1){
+      // Lightbox video (full / large view)
+      // For split videos (<=25MB per file) we play parts seamlessly by preloading next part.
+      const wrap = document.createElement('div');
+      wrap.style.position = 'relative';
+      wrap.style.width = 'min(1100px, 100%)';
+      wrap.style.maxHeight = '80vh';
+      wrap.style.margin = '0 auto';
+
+      const v = document.createElement('video');
+      v.controls = true;              // в большом просмотре удобно оставить управление
+      v.autoplay = true;
+      v.playsInline = true;
+      v.preload = 'auto';
+      v.loop = false;
+      v.muted = false;
+      v.style.width = '100%';
+      v.style.height = 'auto';
+      v.style.maxHeight = '80vh';
+      v.style.display = 'block';
+
+      const list = parts.length ? parts : [src];
+      let idx = 0;
+
+      const setSrc = (file)=>{
+        // swap source safely
+        v.pause();
+        v.removeAttribute('src');
+        v.innerHTML = '';
+        const s = document.createElement('source');
+        s.src = file;
+        const ext = (file.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+        s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
+        v.appendChild(s);
+        try{ v.load(); }catch(e){}
+      };
+
+      // preload helper
+      const preload = (file)=>{
         try{
-          parts.slice(1).forEach(p=>{
-            const link = document.createElement('link');
-            link.rel = 'preload';
-            link.as = 'video';
-            link.href = p;
-            const ext = (p.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
-            link.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
-            document.head.appendChild(link);
-          });
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'video';
+          link.href = file;
+          const ext = (file.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+          link.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
+          document.head.appendChild(link);
         }catch(e){}
-      }
+      };
 
-      el = document.createElement('video');
-      el.controls = true;
-      el.autoplay = true;
-      el.playsInline = true;
-      el.preload = 'auto';
-      el.loop = false;
-      el.muted = false;
-      el.volume = 1;
+      // initial
+      setSrc(list[0]);
+      if(list[1]) preload(list[1]);
 
-      const s = document.createElement('source');
-      s.src = (parts.length ? parts[0] : src);
-      const ext = ((parts.length ? parts[0] : src).split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
-      s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
-      el.appendChild(s);
-      // If the video is split into parts (<25MB each for GitHub web upload),
-      // play them with a "double-buffer" approach to avoid black gaps between files.
-      // (We keep two <video> elements and cross-switch when the next part is ready.)
-      if(parts.length > 1){
-        el.controls = false; // we'll show controls on the wrapper's active video only
-        el.style.display = 'none';
+      v.addEventListener('ended', ()=>{
+        idx += 1;
+        if(idx >= list.length) return;
+        setSrc(list[idx]);
+        // start playing next part, and preload the following
+        const p = v.play();
+        if(p && p.catch) p.catch(()=>{});
+        if(list[idx+1]) preload(list[idx+1]);
+      });
 
-        const wrap = document.createElement('div');
-        wrap.className = 'lightbox-video-wrap';
-        wrap.style.position = 'relative';
-        wrap.style.width = 'min(92vw, 1000px)';
-        wrap.style.maxHeight = '80vh';
+      wrap.appendChild(v);
+      inner.appendChild(wrap);
 
-        const mk = () => {
-          const v = document.createElement('video');
-          v.controls = true;
-          v.autoplay = false;
-          v.playsInline = true;
-          v.preload = 'auto';
-          v.loop = false;
-          v.muted = false;
-          v.volume = 1;
-          v.style.width = '100%';
-          v.style.height = 'auto';
-          v.style.maxHeight = '80vh';
-          v.style.display = 'block';
-          v.style.position = 'absolute';
-          v.style.left = '0';
-          v.style.top = '0';
-          v.style.transition = 'opacity 120ms linear';
-          v.style.opacity = '0';
-          return v;
-        };
+      // show lightbox
+      box.classList.add('on');
+      box.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
 
-        const vA = mk();
-        const vB = mk();
-        vA.style.opacity = '1';
-        vA.style.position = 'relative'; // first video defines layout height
-        vB.style.position = 'absolute';
-
-        wrap.appendChild(vA);
-        wrap.appendChild(vB);
-        inner.appendChild(wrap);
-
-        const extType = (u)=>{
-          const ext = (u.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
-          return ext === 'mov' ? 'video/quicktime' : 'video/mp4';
-        };
-
-        const loadSrc = (v, url)=>{
-          // Use <source> for type hints (helps Safari)
-          while(v.firstChild) v.removeChild(v.firstChild);
-          const s = document.createElement('source');
-          s.src = url;
-          s.type = extType(url);
-          v.appendChild(s);
-          try{ v.load(); }catch(e){}
-        };
-
-        let idx = 0;             // currently playing part index
-        let active = vA;
-        let standby = vB;
-        let switching = false;
-        let standbyReady = false;
-
-        const primeStandby = ()=>{
-          standbyReady = false;
-          const next = parts[idx+1];
-          if(!next) return;
-          loadSrc(standby, next);
-
-          const onReady = ()=>{
-            standbyReady = true;
-            standby.removeEventListener('canplaythrough', onReady);
-            standby.removeEventListener('canplay', onReady);
-          };
-          standby.addEventListener('canplaythrough', onReady, { once:true });
-          standby.addEventListener('canplay', onReady, { once:true });
-        };
-
-        const swapToStandby = ()=>{
-          if(!standbyReady || switching) return;
-          switching = true;
-
-          // Start the next part slightly before the current ends, so the user never sees black.
-          try{
-            standby.currentTime = 0;
-          }catch(e){}
-          const p = standby.play();
-          if(p && p.catch) p.catch(()=>{});
-
-          // Visual swap
-          standby.style.opacity = '1';
-          active.style.opacity = '0';
-
-          // After a short moment, pause the old one and reuse it as the next standby
-          window.setTimeout(()=>{
-            try{ active.pause(); }catch(e){}
-            // Move layout anchor to the now-active video
-            active.style.position = 'absolute';
-            standby.style.position = 'relative';
-
-            const tmp = active;
-            active = standby;
-            standby = tmp;
-
-            idx += 1;
-            switching = false;
-            primeStandby();
-          }, 140);
-        };
-
-        const maybeSwapSoon = ()=>{
-          if(!parts[idx+1]) return;
-          const d = active.duration;
-          if(!isFinite(d) || d <= 0) return;
-          const remaining = d - active.currentTime;
-          // Start the next segment a bit early (tuned to reduce visible gaps).
-          if(remaining < 0.35) swapToStandby();
-        };
-
-        // Start first part
-        loadSrc(active, parts[0]);
-        const startFirst = ()=>{
-          const p = active.play();
-          if(p && p.catch) p.catch(()=>{});
-        };
-
-        active.addEventListener('timeupdate', maybeSwapSoon);
-        active.addEventListener('ended', ()=>{
-          // Fallback: if we didn't swap early, swap at end (still avoids black if standby is ready).
-          if(parts[idx+1]) swapToStandby();
-        });
-
-        // Whenever we switch active/standby, we need listeners on the *current* active.
-        const rebindActiveListeners = ()=>{
-          // Remove from both then add to active
-          [vA, vB].forEach(v=>{
-            v.removeEventListener('timeupdate', maybeSwapSoon);
-          });
-          active.addEventListener('timeupdate', maybeSwapSoon);
-          active.addEventListener('ended', ()=>{
-            if(parts[idx+1]) swapToStandby();
-          });
-        };
-
-        // Patch swap to also rebind listeners
-        const originalSwap = swapToStandby;
-        // We can't reassign const; so hook rebind inside timeout above by calling here
-        const _swap = ()=>{
-          originalSwap();
-          rebindActiveListeners();
-        };
-        // Replace references used by events
-        // (events call swapToStandby directly; keep as-is because rebind runs after switch)
-        // Prime next and start
-        primeStandby();
-        // Ensure the first video starts after it can play (Safari)
-        active.addEventListener('canplay', ()=>{ startFirst(); }, { once:true });
-        // In case canplay already fired
-        startFirst();
-
-        // We've already appended wrap to inner; stop default append below
-        return;
-      }
-
-      // Playback in lightbox should be full-length with sound.
-      // (No extra watchdog timers that could stop playback early.)
-    } else {
-      el = document.createElement('img');
-      el.src = src;
-      el.alt = '';
-      el.loading = 'eager';
+      // start play (best-effort)
+      const p = v.play();
+      if(p && p.catch) p.catch(()=>{});
+      return;
     }
-    inner.appendChild(el);
+
+    // image
+    const img = document.createElement('img');
+    img.alt = '';
+    img.loading = 'eager';
+    img.decoding = 'async';
+    img.src = src;
+    inner.appendChild(img);
+
     box.classList.add('on');
     box.setAttribute('aria-hidden','false');
-    // lock scroll
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-
-    // best-effort play for iOS
-    if(kind === 'video'){
-      const p = el.play();
-      if(p && p.catch) p.catch(()=>{});
-
-      // Fullscreen + sound on click (user gesture)
-      tryFullscreen(el);
-    }
   };
 
   const close = ()=>{
-    // exit fullscreen if the video requested it
+    // stop any playing video in lightbox
     try{
-      if(document.fullscreenElement) document.exitFullscreen();
-      // Safari
-      if(document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
+      inner.querySelectorAll('video').forEach(v=>{ try{ v.pause(); }catch(e){} });
     }catch(e){}
-
-    // stop and unload any video to prevent iOS audio continuing in background
-    const v = inner.querySelector('video');
-    if(v){
-      try{ v.removeAttribute('src'); }catch(e){}
-      try{ v.load(); }catch(e){}
-    }
-
     box.classList.remove('on');
     box.setAttribute('aria-hidden','true');
     inner.innerHTML = '';
+    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
   };
-
-  triggers.forEach(btn=>{
+triggers.forEach(btn=>{
     btn.addEventListener('click', ()=>{
       open(btn.dataset.kind, btn.dataset.src, btn.dataset.parts);
     });
@@ -566,9 +414,20 @@ function renderPublic(items){
     if(e.key === 'Escape') close();
   });
 
-  // Autoplay muted previews when visible (best-effort)
+  // Autoplay previews as soon as they appear in viewport (gallery page)
   const previews = document.querySelectorAll('video.media-preview');
-  if(previews.length){
+  // Make sure every preview behaves одинаково: без controls, без звука, авто/loop
+  previews.forEach(v=>{
+    v.muted = true;
+    v.playsInline = true;
+    v.loop = true;
+    v.autoplay = true;
+    v.controls = false;
+    // "metadata" быстрее стартует, "auto" — плавнее; оставим auto для мобильных по возможности
+    try{ v.preload = 'auto'; }catch(e){}
+  });
+
+  if('IntersectionObserver' in window && previews.length){
     const vio = new IntersectionObserver((entries)=>{
       entries.forEach(en=>{
         const v = en.target;
@@ -576,10 +435,10 @@ function renderPublic(items){
           const p = v.play();
           if(p && p.catch) p.catch(()=>{});
         } else {
-          v.pause();
+          try{ v.pause(); }catch(e){}
         }
       });
-    }, {threshold: 0.25});
+    }, {threshold: 0.01, rootMargin: '150px 0px 150px 0px'});
     previews.forEach(v=>vio.observe(v));
   }
 })();
