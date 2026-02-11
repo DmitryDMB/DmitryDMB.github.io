@@ -112,7 +112,9 @@
     <div class="card tile reveal">
       <button aria-label="Открыть видео 4" class="media-open" data-kind="video" data-src="video-12a.mp4" data-parts="video-12a.mp4,video-12b.mp4" type="button">
         <div class="video-box portrait">
-          
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="IMG_6415.mov" type="video/quicktime">
+          </video>
         </div>
       </button>
     </div>
@@ -144,7 +146,7 @@
 </main>
 <div aria-hidden="true" class="lightbox" id="lightbox">
 <button aria-label="Закрыть" class="lb-close" id="lbClose" type="button">×</button>
-<div class="lb-inner" id="lbInner"></div>
+
 </div>
 <footer>
 <div class="container foot">
@@ -157,13 +159,5 @@
 </footer>
 <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 <script src="script.js"></script>
-
-    <div class="gallery-video">
-        <video controls width="100%">
-            <source src="new_gallery_video.mov" type="video/quicktime">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
 </body>
 </html>
