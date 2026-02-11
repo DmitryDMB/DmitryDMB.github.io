@@ -287,6 +287,20 @@ function renderPublic(items){
   const triggers = document.querySelectorAll('.media-open[data-kind][data-src]');
   if(!box || !inner || !closeBtn || !triggers.length) return;
 
+  // Try to enter fullscreen for video when user clicks a thumbnail.
+  // Works in most modern browsers; on iOS Safari falls back to webkitEnterFullscreen.
+  const tryFullscreen = (videoEl)=>{
+    if(!videoEl) return;
+    const req = videoEl.requestFullscreen
+      || videoEl.webkitRequestFullscreen
+      || videoEl.mozRequestFullScreen
+      || videoEl.msRequestFullscreen;
+    try{
+      if(req) return req.call(videoEl);
+      if(typeof videoEl.webkitEnterFullscreen === 'function') return videoEl.webkitEnterFullscreen();
+    }catch(e){}
+  };
+
   // Убираем значок «плей» на превью видео в галерее.
   // Работает и для новых карточек, если их добавят с таким же классом.
   document.querySelectorAll('.gallery-grid .play-ico').forEach(el => el.remove());
@@ -350,10 +364,20 @@ function renderPublic(items){
     if(kind === 'video'){
       const p = el.play();
       if(p && p.catch) p.catch(()=>{});
+
+      // Fullscreen + sound on click (user gesture)
+      tryFullscreen(el);
     }
   };
 
   const close = ()=>{
+    // exit fullscreen if the video requested it
+    try{
+      if(document.fullscreenElement) document.exitFullscreen();
+      // Safari
+      if(document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }catch(e){}
+
     // stop and unload any video to prevent iOS audio continuing in background
     const v = inner.querySelector('video');
     if(v){
