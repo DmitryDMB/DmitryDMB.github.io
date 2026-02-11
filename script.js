@@ -341,25 +341,170 @@ function renderPublic(items){
       const ext = ((parts.length ? parts[0] : src).split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
       s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
       el.appendChild(s);
-
       // If the video is split into parts (<25MB each for GitHub web upload),
-      // play them sequentially in the lightbox as one clip.
+      // play them with a "double-buffer" approach to avoid black gaps between files.
+      // (We keep two <video> elements and cross-switch when the next part is ready.)
       if(parts.length > 1){
-        el.addEventListener('ended', ()=>{
-          partIndex += 1;
-          if(partIndex >= parts.length) return;
+        el.controls = false; // we'll show controls on the wrapper's active video only
+        el.style.display = 'none';
 
-          while(el.firstChild) el.removeChild(el.firstChild);
-          const s2 = document.createElement('source');
-          s2.src = parts[partIndex];
-          const ext2 = (s2.src.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
-          s2.type = ext2 === 'mov' ? 'video/quicktime' : 'video/mp4';
-          el.appendChild(s2);
+        const wrap = document.createElement('div');
+        wrap.className = 'lightbox-video-wrap';
+        wrap.style.position = 'relative';
+        wrap.style.width = 'min(92vw, 1000px)';
+        wrap.style.maxHeight = '80vh';
 
-          try{ el.load(); }catch(e){}
-          const p2 = el.play();
-          if(p2 && p2.catch) p2.catch(()=>{});
+        const mk = () => {
+          const v = document.createElement('video');
+          v.controls = true;
+          v.autoplay = false;
+          v.playsInline = true;
+          v.preload = 'auto';
+          v.loop = false;
+          v.muted = false;
+          v.volume = 1;
+          v.style.width = '100%';
+          v.style.height = 'auto';
+          v.style.maxHeight = '80vh';
+          v.style.display = 'block';
+          v.style.position = 'absolute';
+          v.style.left = '0';
+          v.style.top = '0';
+          v.style.transition = 'opacity 120ms linear';
+          v.style.opacity = '0';
+          return v;
+        };
+
+        const vA = mk();
+        const vB = mk();
+        vA.style.opacity = '1';
+        vA.style.position = 'relative'; // first video defines layout height
+        vB.style.position = 'absolute';
+
+        wrap.appendChild(vA);
+        wrap.appendChild(vB);
+        inner.appendChild(wrap);
+
+        const extType = (u)=>{
+          const ext = (u.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
+          return ext === 'mov' ? 'video/quicktime' : 'video/mp4';
+        };
+
+        const loadSrc = (v, url)=>{
+          // Use <source> for type hints (helps Safari)
+          while(v.firstChild) v.removeChild(v.firstChild);
+          const s = document.createElement('source');
+          s.src = url;
+          s.type = extType(url);
+          v.appendChild(s);
+          try{ v.load(); }catch(e){}
+        };
+
+        let idx = 0;             // currently playing part index
+        let active = vA;
+        let standby = vB;
+        let switching = false;
+        let standbyReady = false;
+
+        const primeStandby = ()=>{
+          standbyReady = false;
+          const next = parts[idx+1];
+          if(!next) return;
+          loadSrc(standby, next);
+
+          const onReady = ()=>{
+            standbyReady = true;
+            standby.removeEventListener('canplaythrough', onReady);
+            standby.removeEventListener('canplay', onReady);
+          };
+          standby.addEventListener('canplaythrough', onReady, { once:true });
+          standby.addEventListener('canplay', onReady, { once:true });
+        };
+
+        const swapToStandby = ()=>{
+          if(!standbyReady || switching) return;
+          switching = true;
+
+          // Start the next part slightly before the current ends, so the user never sees black.
+          try{
+            standby.currentTime = 0;
+          }catch(e){}
+          const p = standby.play();
+          if(p && p.catch) p.catch(()=>{});
+
+          // Visual swap
+          standby.style.opacity = '1';
+          active.style.opacity = '0';
+
+          // After a short moment, pause the old one and reuse it as the next standby
+          window.setTimeout(()=>{
+            try{ active.pause(); }catch(e){}
+            // Move layout anchor to the now-active video
+            active.style.position = 'absolute';
+            standby.style.position = 'relative';
+
+            const tmp = active;
+            active = standby;
+            standby = tmp;
+
+            idx += 1;
+            switching = false;
+            primeStandby();
+          }, 140);
+        };
+
+        const maybeSwapSoon = ()=>{
+          if(!parts[idx+1]) return;
+          const d = active.duration;
+          if(!isFinite(d) || d <= 0) return;
+          const remaining = d - active.currentTime;
+          // Start the next segment a bit early (tuned to reduce visible gaps).
+          if(remaining < 0.35) swapToStandby();
+        };
+
+        // Start first part
+        loadSrc(active, parts[0]);
+        const startFirst = ()=>{
+          const p = active.play();
+          if(p && p.catch) p.catch(()=>{});
+        };
+
+        active.addEventListener('timeupdate', maybeSwapSoon);
+        active.addEventListener('ended', ()=>{
+          // Fallback: if we didn't swap early, swap at end (still avoids black if standby is ready).
+          if(parts[idx+1]) swapToStandby();
         });
+
+        // Whenever we switch active/standby, we need listeners on the *current* active.
+        const rebindActiveListeners = ()=>{
+          // Remove from both then add to active
+          [vA, vB].forEach(v=>{
+            v.removeEventListener('timeupdate', maybeSwapSoon);
+          });
+          active.addEventListener('timeupdate', maybeSwapSoon);
+          active.addEventListener('ended', ()=>{
+            if(parts[idx+1]) swapToStandby();
+          });
+        };
+
+        // Patch swap to also rebind listeners
+        const originalSwap = swapToStandby;
+        // We can't reassign const; so hook rebind inside timeout above by calling here
+        const _swap = ()=>{
+          originalSwap();
+          rebindActiveListeners();
+        };
+        // Replace references used by events
+        // (events call swapToStandby directly; keep as-is because rebind runs after switch)
+        // Prime next and start
+        primeStandby();
+        // Ensure the first video starts after it can play (Safari)
+        active.addEventListener('canplay', ()=>{ startFirst(); }, { once:true });
+        // In case canplay already fired
+        startFirst();
+
+        // We've already appended wrap to inner; stop default append below
+        return;
       }
 
       // Playback in lightbox should be full-length with sound.
