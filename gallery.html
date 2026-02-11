@@ -77,63 +77,68 @@
 <div class="section-title reveal">
 <h2>Видео</h2>
 <div class="hint">Фрагменты занятий и выступлений</div>
-</div>
-<div class="grid gallery-grid">
-<div class="card tile reveal">
-<button aria-label="Открыть видео 1" class="media-open" data-kind="video" data-src="video-8.mp4" type="button">
-<div class="video-box">
-<video autoplay="" class="media-video media-preview gallery-video" loop="" muted="" playsinline="" preload="metadata">
-<source src="video-8.mp4" type="video/mp4"/>
-</video>
-</div>
-</button>
-</div>
-<div class="card tile reveal">
-<button aria-label="Открыть видео 2" class="media-open" data-kind="video" data-src="video-9.mp4" type="button">
-<div class="video-box portrait">
-<video autoplay="" class="media-video media-preview gallery-video" loop="" muted="" playsinline="" preload="metadata">
-<source src="video-9.mp4" type="video/mp4"/>
-</video>
-</div>
-</button>
-</div>
-<div class="card tile reveal">
-<button aria-label="Открыть видео 3" class="media-open" data-kind="video" data-src="video-10.mp4" type="button">
-<div class="video-box">
-<video autoplay="" class="media-video media-preview gallery-video" loop="" muted="" playsinline="" preload="metadata">
-<source src="video-10.mp4" type="video/mp4"/>
-</video>
-</div>
-</button>
-</div>
-<div class="card tile reveal">
-<button aria-label="Открыть видео 4" class="media-open" data-kind="video" data-src="video-12.mp4" type="button">
-<div class="video-box portrait">
-<video autoplay="" class="media-video media-preview gallery-video" loop="" muted="" playsinline="" preload="metadata">
-<source src="video-12.mp4" type="video/quicktime"/>
-</video>
-</div>
-</button>
-</div>
-<div class="card tile reveal">
-<button aria-label="Открыть видео 5" class="media-open" data-kind="video" data-src="video-13.mp4" type="button">
-<div class="video-box portrait">
-<video autoplay="" class="media-video media-preview gallery-video" loop="" muted="" playsinline="" preload="metadata">
-<source src="video-13.mp4" type="video/mp4">
-</source></video>
-</div>
-</button>
-</div>
-<div class="card tile reveal">
-<button aria-label="Открыть видео 6" class="media-open" data-kind="video" data-src="video-14.mp4" type="button">
-<div class="video-box">
-<video autoplay="" class="media-video media-preview gallery-video" loop="" muted="" playsinline="" preload="metadata">
-<source src="video-14.mp4" type="video/mp4"/>
-</video>
-</div>
-</button>
-</div>
-</div>
+  </div>
+  <div class="grid gallery-grid">
+    <div class="card tile reveal">
+      <button aria-label="Открыть видео 1" class="media-open" data-kind="video" data-src="video-8.mp4" type="button">
+        <div class="video-box">
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="video-8.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </button>
+    </div>
+
+    <div class="card tile reveal">
+      <button aria-label="Открыть видео 2" class="media-open" data-kind="video" data-src="video-9.mp4" type="button">
+        <div class="video-box portrait">
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="video-9.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </button>
+    </div>
+
+    <div class="card tile reveal">
+      <button aria-label="Открыть видео 3" class="media-open" data-kind="video" data-src="video-10.mp4" type="button">
+        <div class="video-box">
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="video-10.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </button>
+    </div>
+
+    <div class="card tile reveal">
+      <button aria-label="Открыть видео 4" class="media-open" data-kind="video" data-src="IMG_6415.mov" data-parts="video-12a.mp4,video-12b.mp4" type="button">
+        <div class="video-box portrait">
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="IMG_6415.mov" type="video/quicktime">
+          </video>
+        </div>
+      </button>
+    </div>
+
+    <div class="card tile reveal">
+      <button aria-label="Открыть видео 5" class="media-open" data-kind="video" data-src="video-13.mp4" type="button">
+        <div class="video-box portrait">
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="video-13.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </button>
+    </div>
+
+    <div class="card tile reveal">
+      <button aria-label="Открыть видео 6" class="media-open" data-kind="video" data-src="video-14a.mp4" data-parts="video-14a.mp4,video-14b.mp4,video-14c.mp4" type="button">
+        <div class="video-box">
+          <video class="media-video media-preview gallery-video" autoplay loop muted playsinline preload="metadata">
+            <source src="video-14a.mp4" type="video/mp4"/>
+          </video>
+        </div>
+      </button>
+    </div>
+  </div>
 </section>
 <section class="section">
 <div class="card reveal">
@@ -151,14 +156,16 @@
 </main>
 <div aria-hidden="true" class="lightbox" id="lightbox">
 <button aria-label="Закрыть" class="lb-close" id="lbClose" type="button">×</button>
-<!-- Контент лайтбокса (сюда подставляется фото/видео через script.js) -->
-<div class="lb-inner" id="lbInner"></div>
+
+  <!-- Контент лайтбокса (сюда подставляется фото/видео через script.js) -->
+  <div class="lb-inner" id="lbInner"></div>
+
 </div>
 <footer>
 <div class="container foot">
 <div class="small">© <span id="y"></span> Dmitry Black • Онлайн-хорео • Танцы &amp; фитнес</div>
 <div class="btnrow footer-links">
-<a class="pill" href="https://t.me/Dmitry_DMB" rel="noopener" target="_blank"><span>Запись в Telegram</span></a>
+    <a class="pill" href="https://t.me/Dmitry_DMB" rel="noopener" target="_blank"><span>Запись в Telegram</span></a>
 <a class="pill" href="https://t.me/Dance_Group_BLACK" rel="noopener" target="_blank"><span>Telegram-канал</span></a>
 </div>
 </div>
