@@ -11,13 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   btn.className = "media-open";
   btn.setAttribute("aria-label", "Открыть видео (новое)");
   btn.dataset.kind = "video";
-  // For preview we point to first part; full playback will use parts list
-  btn.dataset.src = "video_part_01.bin";
+  // Preview plays this small mp4 (so no black box and it auto-plays like others)
+  btn.dataset.src = "new_gallery_preview.mp4";
+  // Full-length playback in lightbox will use these parts (script.js already supports chaining parts)
   btn.dataset.parts = "video_part_01.bin,video_part_02.bin,video_part_03.bin,video_part_04.bin,video_part_05.bin,video_part_06.bin,video_part_07.bin,video_part_08.bin,video_part_09.bin";
 
   const box = document.createElement("div");
   box.className = "video-box";
-  // Horizontal like the first video: 16:9 (CSS already sets it, but keep explicit safety)
+  // Horizontal 16:9 like the first video
   box.style.aspectRatio = "16 / 9";
 
   const video = document.createElement("video");
@@ -30,11 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   video.controls = false;
 
   const source = document.createElement("source");
-  source.src = "video_part_01.bin";
-  // MOV parts; Safari plays it. Leaving type unset helps some browsers sniff.
-  // source.type = "video/quicktime";
-
+  source.src = "new_gallery_preview.mp4";
+  source.type = "video/mp4";
   video.appendChild(source);
+
   box.appendChild(video);
   btn.appendChild(box);
   figure.appendChild(btn);
