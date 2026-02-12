@@ -328,9 +328,14 @@ function renderPublic(items){
       const v = document.createElement('video');
       v.controls = true;              // в большом просмотре удобно оставить управление
       v.autoplay = true;
-      // IMPORTANT:
-      // Пользователь просит «на полный экран». Поэтому в лайтбоксе НЕ форсим playsinline.
-      // На iOS это позволяет открыть нативный fullscreen (или по кнопке, или автоматически).
+      // IMPORTANT (iOS/Safari):
+      // Если НЕ ставить playsinline, Safari часто уводит видео в нативный fullscreen слой.
+      // При закрытии лайтбокса после такого fullscreen бывает «чёрный экран»/зависание.
+      // Поэтому в лайтбоксе играем inline, но сам лайтбокс занимает весь экран (100vw/100vh).
+      v.playsInline = true;
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
+
       v.preload = 'auto';
       v.loop = false;
       v.muted = false;
@@ -381,14 +386,8 @@ function renderPublic(items){
       };
       v.addEventListener('canplay', tryPlay, { once: true });
 
-      // Best-effort: open native fullscreen right after user tap on iOS
-      const tryFullscreen = ()=>{
-        try{
-          if(typeof v.webkitEnterFullscreen === 'function') v.webkitEnterFullscreen();
-          else if(typeof v.requestFullscreen === 'function') v.requestFullscreen();
-        }catch(e){}
-      };
-      v.addEventListener('loadedmetadata', tryFullscreen, { once: true });
+      // НЕ форсим requestFullscreen / webkitEnterFullscreen — это главный источник багов на iOS.
+      // Пользователь всё равно может включить fullscreen через системную кнопку плеера.
 
       v.addEventListener('ended', ()=>{
         idx += 1;
@@ -431,16 +430,34 @@ function renderPublic(items){
   };
 
   const close = ()=>{
-    // stop any playing video in lightbox
+    // На iOS/Safari важно чистить всё «в любом случае», иначе можно остаться на чёрном экране.
     try{
-      inner.querySelectorAll('video').forEach(v=>{ try{ v.pause(); }catch(e){} });
+      const vids = inner.querySelectorAll('video');
+      vids.forEach(v=>{
+        try{
+          // если пользователь включил fullscreen кнопкой — выходим из него перед очисткой DOM
+          if(typeof v.webkitExitFullscreen === 'function'){
+            try{ v.webkitExitFullscreen(); }catch(e){}
+          }
+          v.pause();
+          // сбрасываем источник, чтобы Safari освободил видеослой
+          v.removeAttribute('src');
+          v.load?.();
+        }catch(e){}
+      });
     }catch(e){}
+
+    // сначала скрываем оверлей, потом чистим контент (меньше шансов поймать баг Safari)
     box.classList.remove('on');
     box.classList.remove('is-video');
     box.setAttribute('aria-hidden','true');
-    inner.innerHTML = '';
     document.documentElement.style.overflow = '';
-    unlockScroll();
+
+    // восстановление скролла делаем в rAF, чтобы браузер успел перерассчитать layout
+    requestAnimationFrame(()=>{
+      try{ inner.innerHTML = ''; }catch(e){}
+      try{ unlockScroll(); }catch(e){}
+    });
   };
 triggers.forEach(btn=>{
     btn.addEventListener('click', ()=>{
