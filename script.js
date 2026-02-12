@@ -291,6 +291,26 @@ function renderPublic(items){
   // Работает и для новых карточек, если их добавят с таким же классом.
   document.querySelectorAll('.gallery-grid .play-ico').forEach(el => el.remove());
 
+  // --- Scroll lock without jump (iOS/Safari friendly) ---
+  let savedScrollY = 0;
+  const lockScroll = ()=>{
+    savedScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  };
+  const unlockScroll = ()=>{
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    // restore exact position
+    window.scrollTo(0, savedScrollY);
+  };
+
   
   const open = (kind, src, partsCsv)=>{
     const parts = (partsCsv||'').split(',').map(s=>s.trim()).filter(Boolean);
@@ -372,7 +392,7 @@ function renderPublic(items){
       box.classList.add('on');
       box.setAttribute('aria-hidden','false');
       document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
+      lockScroll();
 
       // start play (best-effort)
       const p = v.play();
@@ -391,7 +411,7 @@ function renderPublic(items){
     box.classList.add('on');
     box.setAttribute('aria-hidden','false');
     document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+    lockScroll();
   };
 
   const close = ()=>{
@@ -403,7 +423,7 @@ function renderPublic(items){
     box.setAttribute('aria-hidden','true');
     inner.innerHTML = '';
     document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
+    unlockScroll();
   };
 triggers.forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -419,17 +439,54 @@ triggers.forEach(btn=>{
     if(e.key === 'Escape') close();
   });
 
-  // Autoplay previews as soon as they appear in viewport (gallery page)
+  // Превью видео в галерее:
+  // - подгружаем источник только когда карточка близко к экрану
+  // - сразу запускаем (muted + playsinline), чтобы не было нативного оверлея «Play»
   const previews = document.querySelectorAll('video.media-preview');
-  // Make sure every preview behaves одинаково: без controls, без звука, авто/loop
+  const ensureLoaded = (v)=>{
+    if(v.dataset.loaded === '1') return;
+    const srcEl = v.querySelector('source[data-src]');
+    if(!srcEl) return;
+    const file = srcEl.getAttribute('data-src');
+    if(!file) return;
+    srcEl.setAttribute('src', file);
+    v.dataset.loaded = '1';
+    try{ v.load(); }catch(e){}
+  };
+
+  const startPlay = (v)=>{
+    // iOS: важно выставить muted/playsinline ДО вызова play()
+    v.muted = true;
+    v.setAttribute('muted', '');
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    v.loop = true;
+    v.autoplay = true;
+    v.controls = false;
+    try{ v.preload = 'metadata'; }catch(e){}
+
+    const p = v.play();
+    if(p && p.catch) p.catch(()=>{});
+  };
+
+  // best-effort: на некоторых Safari первый кадр может быть чёрным, пока не сделаем небольшой seek
+  const warmFirstFrame = (v)=>{
+    try{
+      if(!isFinite(v.duration) || v.duration <= 0) return;
+      const t = Math.min(0.08, Math.max(0.02, v.duration * 0.01));
+      if(v.currentTime < t) v.currentTime = t;
+    }catch(e){}
+  };
+
   previews.forEach(v=>{
     v.muted = true;
     v.playsInline = true;
     v.loop = true;
     v.autoplay = true;
     v.controls = false;
-    // "metadata" быстрее стартует, "auto" — плавнее; оставим auto для мобильных по возможности
-    try{ v.preload = 'auto'; }catch(e){}
+    try{ v.preload = 'none'; }catch(e){}
+    v.addEventListener('loadedmetadata', ()=>warmFirstFrame(v));
   });
 
   if('IntersectionObserver' in window && previews.length){
@@ -437,45 +494,17 @@ triggers.forEach(btn=>{
       entries.forEach(en=>{
         const v = en.target;
         if(en.isIntersecting){
-          const p = v.play();
-          if(p && p.catch) p.catch(()=>{});
-        } else {
+          ensureLoaded(v);
+          startPlay(v);
+        }else{
           try{ v.pause(); }catch(e){}
         }
       });
-    }, {threshold: 0.01, rootMargin: '150px 0px 150px 0px'});
+    }, {threshold: 0.01, rootMargin: '350px 0px 350px 0px'});
+
     previews.forEach(v=>vio.observe(v));
+  }else{
+    // fallback (очень старые браузеры): грузим и пробуем запустить все
+    previews.forEach(v=>{ ensureLoaded(v); startPlay(v); });
   }
 })();
-
-
-/* gallery-video-thumb-fix */
-document.addEventListener('DOMContentLoaded', () => {
-  const vids = document.querySelectorAll('video.gallery-video');
-  vids.forEach(v => {
-    const trySeek = () => {
-      try {
-        const t = 0.1;
-// disabled preview trim
-// disabled preview trim
-      } catch (e) {}
-    };
-
-    v.addEventListener('loadedmetadata', trySeek, { once: true });
-
-    if (v.readyState >= 1) {
-      trySeek();
-    } else {
-      try { v.load(); } catch (e) {}
-    }
-
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(ent => {
-          if (ent.isIntersecting) trySeek();
-        });
-      }, { threshold: 0.25 });
-      io.observe(v);
-    }
-  });
-});

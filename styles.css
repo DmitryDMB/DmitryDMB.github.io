@@ -656,6 +656,17 @@ footer{
   object-fit: cover;
 }
 
+/* Safari/iOS: убираем нативные кнопки/оверлей «Play» на превью видео.
+   На превью управление не нужно — запуск/пауза делаем через IntersectionObserver. */
+video.media-preview::-webkit-media-controls,
+video.media-preview::-webkit-media-controls-panel,
+video.media-preview::-webkit-media-controls-start-playback-button,
+video.media-preview::-webkit-media-controls-play-button,
+video.media-preview::-webkit-media-controls-overlay-play-button{
+  display:none !important;
+  -webkit-appearance:none;
+}
+
 .play-ico{
   display:none !important;
   pointer-events:none;
