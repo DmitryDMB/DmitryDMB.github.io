@@ -750,12 +750,27 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   z-index:9999;
 }
 .lightbox.on{display:flex;}
+.lightbox.is-video{padding:0;}
 .lb-inner{
   width:min(1000px, 96vw);
   max-height: 88vh;
   display:flex;
   align-items:center;
   justify-content:center;
+}
+
+/* Fullscreen-like lightbox for videos */
+.lightbox.is-video .lb-inner{
+  width:100vw;
+  height:100vh;
+  max-height:100vh;
+}
+.lightbox.is-video .lb-inner video{
+  width:100vw;
+  height:100vh;
+  max-height:100vh;
+  border-radius:0;
+  border:none;
 }
 .lb-inner img, .lb-inner video{
   width:100%;

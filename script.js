@@ -321,25 +321,22 @@ function renderPublic(items){
       // For split videos (<=25MB per file) we play parts seamlessly by preloading next part.
       const wrap = document.createElement('div');
       wrap.style.position = 'relative';
-      wrap.style.width = 'min(1100px, 100%)';
-      wrap.style.maxHeight = '80vh';
-      wrap.style.margin = '0 auto';
+      // размеры контролируются CSS через .lightbox.is-video
+      wrap.style.width = '100%';
+      wrap.style.height = '100%';
 
       const v = document.createElement('video');
       v.controls = true;              // в большом просмотре удобно оставить управление
       v.autoplay = true;
-      v.playsInline = true;
-      // iOS Safari: дополнительно просим воспроизводить inline,
-      // иначе вертикальные видео часто уходят в "native fullscreen",
-      // где нет нашей кнопки закрытия.
-      v.setAttribute('playsinline', '');
-      v.setAttribute('webkit-playsinline', '');
+      // IMPORTANT:
+      // Пользователь просит «на полный экран». Поэтому в лайтбоксе НЕ форсим playsinline.
+      // На iOS это позволяет открыть нативный fullscreen (или по кнопке, или автоматически).
       v.preload = 'auto';
       v.loop = false;
       v.muted = false;
       v.style.width = '100%';
-      v.style.height = 'auto';
-      v.style.maxHeight = '80vh';
+      v.style.height = '100%';
+      v.style.maxHeight = '100%';
       v.style.display = 'block';
 
       const list = parts.length ? parts : [src];
@@ -375,6 +372,24 @@ function renderPublic(items){
       setSrc(list[0]);
       if(list[1]) preload(list[1]);
 
+      // Ensure playback starts reliably after load (Safari sometimes ignores immediate play())
+      const tryPlay = ()=>{
+        try{
+          const p = v.play();
+          if(p && p.catch) p.catch(()=>{});
+        }catch(e){}
+      };
+      v.addEventListener('canplay', tryPlay, { once: true });
+
+      // Best-effort: open native fullscreen right after user tap on iOS
+      const tryFullscreen = ()=>{
+        try{
+          if(typeof v.webkitEnterFullscreen === 'function') v.webkitEnterFullscreen();
+          else if(typeof v.requestFullscreen === 'function') v.requestFullscreen();
+        }catch(e){}
+      };
+      v.addEventListener('loadedmetadata', tryFullscreen, { once: true });
+
       v.addEventListener('ended', ()=>{
         idx += 1;
         if(idx >= list.length) return;
@@ -389,18 +404,19 @@ function renderPublic(items){
       inner.appendChild(wrap);
 
       // show lightbox
+      box.classList.add('is-video');
       box.classList.add('on');
       box.setAttribute('aria-hidden','false');
       document.documentElement.style.overflow = 'hidden';
       lockScroll();
 
       // start play (best-effort)
-      const p = v.play();
-      if(p && p.catch) p.catch(()=>{});
+      tryPlay();
       return;
     }
 
     // image
+    box.classList.remove('is-video');
     const img = document.createElement('img');
     img.alt = '';
     img.loading = 'eager';
@@ -420,6 +436,7 @@ function renderPublic(items){
       inner.querySelectorAll('video').forEach(v=>{ try{ v.pause(); }catch(e){} });
     }catch(e){}
     box.classList.remove('on');
+    box.classList.remove('is-video');
     box.setAttribute('aria-hidden','true');
     inner.innerHTML = '';
     document.documentElement.style.overflow = '';
