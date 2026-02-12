@@ -750,7 +750,17 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   z-index:9999;
 }
 .lightbox.on{display:flex;}
-.lightbox.is-video{padding:0;}
+.lightbox.is-video{
+  /*
+    iOS/Safari: оставляем flex-центрирование, чтобы видео было ровно по центру,
+    а контролы не уезжали под нижнюю панель.
+  */
+  padding:
+    max(16px, env(safe-area-inset-top))
+    16px
+    max(16px, env(safe-area-inset-bottom))
+    16px;
+}
 .lb-inner{
   width:min(1000px, 96vw);
   max-height: 88vh;
@@ -759,23 +769,23 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   justify-content:center;
 }
 
-/* Fullscreen-like lightbox for videos */
+/* Large / fullscreen-like lightbox for videos (visually full screen, but video centered) */
 .lightbox.is-video .lb-inner{
-  width:100vw;
-  height:100vh;
-  max-height:100vh;
-  position:fixed;
-  inset:0;
-  display:block;
+  width:100%;
+  height:100%;
+  max-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .lightbox.is-video .lb-inner video{
-  position:absolute;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  max-height:100vh;
-  border-radius:0;
-  border:none;
+  width: min(96vw, 980px);
+  height: auto;
+  max-height: calc(100vh - 140px);
+  object-fit: contain;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background: #000;
 }
 .lb-inner img, .lb-inner video{
   width:100%;
@@ -787,7 +797,8 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
 }
 .lb-close{
   position:absolute;
-  top:14px; right:16px;
+  top:max(14px, env(safe-area-inset-top));
+  right:16px;
   /*
     Важно для мобильных/вертикальных видео:
     без z-index кнопка может оказаться под видео (из-за порядка слоёв),
@@ -831,14 +842,7 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   border-radius: 20px;
 }
 
-/* Lightbox / fullscreen view */
-.lb-inner video {
-  width: 100%;
-  height: 100%;
-  max-height: 88vh;
-  object-fit: contain;
-  background: black;
-}
+/* (moved выше) правила для видео в лайтбоксе задаются через .lightbox.is-video .lb-inner video */
 
 
 /* Portrait videos in gallery: fill card with no side bars */

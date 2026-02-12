@@ -332,9 +332,7 @@ function renderPublic(items){
       v.preload = 'auto';
       v.loop = false;
       v.muted = false;
-      v.style.width = '100%';
-      v.style.height = '100%';
-      v.style.maxHeight = '100%';
+      // размеры задаём через CSS, так надёжнее на iOS/Safari (меньше шансов на чёрный экран)
       v.style.display = 'block';
 
       const list = parts.length ? parts : [src];
