@@ -461,6 +461,7 @@ triggers.forEach(btn=>{
   // - подгружаем источник только когда карточка близко к экрану
   // - сразу запускаем (muted + playsinline), чтобы не было нативного оверлея «Play»
   const previews = document.querySelectorAll('video.media-preview');
+  const isGalleryPage = !!document.querySelector('.gallery-grid') && /gallery\.html?$/.test((location.pathname||'').toLowerCase());
   const ensureLoaded = (v)=>{
     if(v.dataset.loaded === '1') return;
     const srcEl = v.querySelector('source[data-src]');
@@ -506,6 +507,30 @@ triggers.forEach(btn=>{
     try{ v.preload = 'none'; }catch(e){}
     v.addEventListener('loadedmetadata', ()=>warmFirstFrame(v));
   });
+
+  // На странице «Галерея» превью должны начинать воспроизведение сразу.
+  // IntersectionObserver остаётся для паузы/догрузки вне экрана, но первый запуск
+  // делаем сразу — так на iOS не появляется нативный значок «Play».
+  if(isGalleryPage && previews.length){
+    previews.forEach(v=>{ ensureLoaded(v); startPlay(v); });
+
+    // Если autoplay всё же был заблокирован (редко, но бывает), повторяем попытку
+    // при первом касании/клике по странице.
+    const retry = ()=>{
+      previews.forEach(v=>{ ensureLoaded(v); startPlay(v); });
+      window.removeEventListener('pointerdown', retry, {capture:true});
+      window.removeEventListener('touchstart', retry, {capture:true});
+    };
+    window.addEventListener('pointerdown', retry, {capture:true, once:true});
+    window.addEventListener('touchstart', retry, {capture:true, once:true});
+
+    // Возвращаем воспроизведение после сворачивания/разворачивания вкладки.
+    document.addEventListener('visibilitychange', ()=>{
+      if(!document.hidden){
+        previews.forEach(v=>{ ensureLoaded(v); startPlay(v); });
+      }
+    });
+  }
 
   if('IntersectionObserver' in window && previews.length){
     const vio = new IntersectionObserver((entries)=>{
