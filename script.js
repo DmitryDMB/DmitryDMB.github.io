@@ -291,22 +291,19 @@ function renderPublic(items){
   // Работает и для новых карточек, если их добавят с таким же классом.
   document.querySelectorAll('.gallery-grid .play-ico').forEach(el => el.remove());
 
-  // --- Scroll lock without jump (iOS/Safari friendly) ---
+  // --- Scroll handling (avoid iOS video render bugs) ---
+  // Раньше фиксировали body (position:fixed) для блокировки скролла.
+  // На iOS/Safari это может ломать отрисовку video (чёрный экран при звуке).
+  // Поэтому блокируем скролл через overflow, а позицию сохраняем вручную.
   let savedScrollY = 0;
   const lockScroll = ()=>{
     savedScrollY = window.scrollY || window.pageYOffset || 0;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${savedScrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
   };
   const unlockScroll = ()=>{
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.left = '';
-    document.body.style.right = '';
-    document.body.style.width = '';
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
     // restore exact position
     window.scrollTo(0, savedScrollY);
   };
@@ -319,14 +316,10 @@ function renderPublic(items){
     if(kind === 'video'){
       // Lightbox video (full / large view)
       // For split videos (<=25MB per file) we play parts seamlessly by preloading next part.
-      const wrap = document.createElement('div');
-      wrap.style.position = 'relative';
-      // размеры контролируются CSS через .lightbox.is-video
-      wrap.style.width = '100%';
-      wrap.style.height = '100%';
-
       const v = document.createElement('video');
       v.controls = true;              // в большом просмотре удобно оставить управление
+      // autoplay в iOS со звуком может блокироваться, но клик пользователя считается жестом.
+      // Всё равно ставим autoplay=true и дополнительно вызываем play() best-effort.
       v.autoplay = true;
       // IMPORTANT (iOS/Safari):
       // Если НЕ ставить playsinline, Safari часто уводит видео в нативный fullscreen слой.
@@ -348,15 +341,9 @@ function renderPublic(items){
       let idx = 0;
 
       const setSrc = (file)=>{
-        // swap source safely
-        v.pause();
-        v.removeAttribute('src');
-        v.innerHTML = '';
-        const s = document.createElement('source');
-        s.src = file;
-        const ext = (file.split('?')[0].split('#')[0].split('.').pop() || '').toLowerCase();
-        s.type = ext === 'mov' ? 'video/quicktime' : 'video/mp4';
-        v.appendChild(s);
+        // swap source safely (важно для iOS: используем src напрямую, без innerHTML)
+        try{ v.pause(); }catch(e){}
+        v.src = file;
         try{ v.load(); }catch(e){}
       };
 
@@ -399,8 +386,7 @@ function renderPublic(items){
         if(list[idx+1]) preload(list[idx+1]);
       });
 
-      wrap.appendChild(v);
-      inner.appendChild(wrap);
+      inner.appendChild(v);
 
       // show lightbox
       box.classList.add('is-video');

@@ -764,8 +764,13 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   width:100vw;
   height:100vh;
   max-height:100vh;
+  position:fixed;
+  inset:0;
+  display:block;
 }
 .lightbox.is-video .lb-inner video{
+  position:absolute;
+  inset:0;
   width:100vw;
   height:100vh;
   max-height:100vh;
