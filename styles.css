@@ -1183,3 +1183,40 @@ footer p {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* TOTAL HARD CROP - remove all vertical empty blocks */
+.about-section,
+.about,
+section,
+.container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+}
+
+.about-logo {
+    padding: 0 !important;
+    margin-top: -120px !important;
+    margin-bottom: -120px !important;
+}
+
+.about-logo img {
+    width: 210px;
+    max-width: 58vw;
+    height: auto;
+    display: block;
+    margin: 0 auto !important;
+}
+
+footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+footer p {
+    margin: 0 !important;
+    padding: 0 !important;
+}
