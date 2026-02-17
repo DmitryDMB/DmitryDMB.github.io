@@ -406,6 +406,18 @@ footer{
 }
 .small{font-size:12px; opacity:.85}
 
+.about-final-logo{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  margin-bottom:12px;
+}
+.about-final-logo img{
+  width:90px;
+  height:auto;
+  opacity:.95;
+}
+
 .foot .btnrow{
   display:flex;
   gap:10px;
