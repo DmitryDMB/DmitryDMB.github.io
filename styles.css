@@ -168,6 +168,8 @@ header{
   content:"";
   position:absolute;
   inset:-2px;
+  /* Prevent visible squared corners on iOS/Safari (blurred glow ignores parent radius sometimes) */
+  border-radius: inherit;
   background:linear-gradient(90deg, rgba(124,58,237,.55), rgba(34,211,238,.45), rgba(163,230,53,.35));
   opacity:0;
   transition:opacity .25s ease;
@@ -628,7 +630,7 @@ footer{
 .btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:18px 0 6px}
 .btn-row .btn{flex:1 1 220px}
 
-.about-photo-wrap{display:flex;justify-content:center;align-items:center;margin:26px auto;padding:0 18px}
+.about-photo-wrap{display:flex;justify-content:center;align-items:center;margin:12px auto;padding:0}
 .about-photo{width:100%;max-width:340px;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
 .about-photo{width:min(420px, 92vw);height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
 
@@ -655,6 +657,9 @@ footer{
   height:100%;
   display:block;
   object-fit: cover;
+  /* iOS/Safari: try to keep video layer crisp */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Safari/iOS: убираем нативные кнопки/оверлей «Play» на превью видео.
@@ -1046,10 +1051,12 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
 }
 
 
-/* === About photo spacing fix === */
+/* === About photo spacing fix ===
+   Tight + equal spacing between text ↔ photo (especially on mobile). */
 .about-photo-wrap {
-  margin-top: 40px !important;
-  margin-bottom: 60px !important;
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
+  padding: 0 !important;
 }
 
 .about-photo {
