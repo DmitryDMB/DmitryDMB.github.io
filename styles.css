@@ -1045,3 +1045,14 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
     border-radius: 28px !important;
   }
 }
+
+
+/* === About photo spacing fix === */
+.about-photo-wrap {
+  margin-top: 40px !important;
+  margin-bottom: 60px !important;
+}
+
+.about-photo {
+  display: block;
+}
