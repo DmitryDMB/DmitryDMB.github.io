@@ -1157,3 +1157,29 @@ footer p {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* ULTRA HARD CROP */
+.about-logo {
+    padding: 0 !important;
+    margin-top: -80px !important;
+    margin-bottom: -50px !important;
+}
+
+.about-logo img {
+    width: 220px;
+    max-width: 60vw;
+    height: auto;
+    display: block;
+    margin: 0 auto !important;
+}
+
+footer {
+    margin-top: -40px !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+footer p {
+    margin: 0 !important;
+    padding: 0 !important;
+}
