@@ -1220,3 +1220,41 @@ footer p {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* MAXIMUM HARD CROP - absolute tight */
+.about-logo,
+.about-section,
+.about,
+section,
+.container,
+.wrapper,
+.content {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+}
+
+.about-logo {
+    margin-top: -160px !important;
+    margin-bottom: -160px !important;
+}
+
+.about-logo img {
+    width: 200px;
+    max-width: 55vw;
+    height: auto;
+    display: block;
+    margin: 0 auto !important;
+}
+
+footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+footer p {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
