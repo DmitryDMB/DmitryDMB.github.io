@@ -628,9 +628,8 @@ footer{
 .btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:18px 0 6px}
 .btn-row .btn{flex:1 1 220px}
 
-.about-photo-wrap {display:flex;justify-content:center;align-items:center;margin:18px 0 0
-  margin: 40px 0;
-}
+.about-photo-wrap{display:flex;justify-content:center;align-items:center;margin:0}
+.about-photo{width:100%;max-width:420px;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
 .about-photo{width:min(420px, 92vw);height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
 
 /* --- Галерея --- */
@@ -1055,4 +1054,23 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
 
 .about-photo {
   display: block;
+}
+
+
+/* --- About layout --- */
+.about-hero{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:26px;
+  align-items:center;
+}
+.about-hero__text{min-width:0}
+.about-hero__text h1{margin-top:4px}
+.about-hero__text .sub{margin-top:12px; text-align:left}
+.about-hero__media{display:flex; justify-content:center; align-items:center}
+.about-hero__media .about-photo{max-width:440px}
+@media (max-width: 860px){
+  .about-hero{grid-template-columns:1fr}
+  .about-hero__media{order:-1}
+  .about-hero__text .sub{text-align:left}
 }
