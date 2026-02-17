@@ -1102,3 +1102,32 @@ footer {
 footer p {
     margin-top: 5px !important;
 }
+
+/* HARD tight layout override */
+.about-logo {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.about-logo img {
+    width: 240px;
+    max-width: 68vw;
+    height: auto;
+    display: block;
+    margin: 0 auto 0 auto !important;
+}
+
+footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: none !important;
+}
+
+footer * {
+    margin-top: 0 !important;
+}
+
+footer p {
+    margin: 0 !important;
+    padding: 5px 0 0 0 !important;
+}
