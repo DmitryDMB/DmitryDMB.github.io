@@ -119,6 +119,17 @@ header{
   body.nav-open .nav.navstack .pill{
     width:100%;
     text-align:center;
+    /* iOS/Safari: keep the active glow fully rounded (no squared corners) */
+    overflow:hidden;
+    border-radius:999px;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    transform: translateZ(0);
+  }
+  body.nav-open .nav.navstack .pill::before{
+    /* Blur + negative inset can "square" at the edges in iOS; use a clean fill */
+    inset:0;
+    filter:none;
+    border-radius:999px;
   }
   body.nav-open .nav.navstack .navlinks .pill{display:flex; justify-content:center}
   body.nav-open .nav.navstack .navlinks .pill.mobile-only{display:flex; justify-content:center}
