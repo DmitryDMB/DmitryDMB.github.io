@@ -26,6 +26,21 @@ items.forEach(i=>io.observe(i));
   });
 })();
 
+// Telegram deep links with prefilled text
+// Usage: <a data-tg-text="..." href="https://t.me/Dmitry_DMB">...</a>
+(function(){
+  const USERNAME = 'Dmitry_DMB';
+  const links = document.querySelectorAll('a[data-tg-text]');
+  if(!links.length) return;
+
+  links.forEach(a=>{
+    const txt = (a.getAttribute('data-tg-text') || '').trim();
+    if(!txt) return;
+    const url = `https://t.me/${USERNAME}?text=${encodeURIComponent(txt)}`;
+    a.setAttribute('href', url);
+  });
+})();
+
 // Mobile burger menu
 (function(){
   const burger = document.querySelector('.burger');
