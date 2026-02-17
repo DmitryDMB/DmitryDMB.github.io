@@ -391,7 +391,9 @@ h1{
 .table td{color: var(--muted)}
 
 footer{
-  border-top:none var(--line);
+  border-top: none !important;
+
+  
   background: rgba(0,0,0,.55);
   padding:28px 0;
   color: var(--muted);
@@ -406,11 +408,14 @@ footer{
 }
 .small{font-size:12px; opacity:.85}
 
+/* About page final logo */
 .about-final-logo{
   display:flex;
   justify-content:center;
-  width:100%;
-  margin-bottom:12px;
+  align-items:center;
+  padding: 48px 0 18px;
+}
+.about-final-logo
 }
 .about-final-logo img{
   width:90px;
