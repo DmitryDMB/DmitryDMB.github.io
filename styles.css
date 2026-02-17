@@ -1079,3 +1079,26 @@ footer {
     margin-top: 10px !important;
     padding-top: 10px !important;
 }
+
+/* Ultra compact spacing for about logo section */
+.about-logo {
+    padding: 5px 0 0 0 !important;
+    margin: 0 !important;
+}
+
+.about-logo img {
+    width: 250px;
+    max-width: 70vw;
+    height: auto;
+    display: block;
+    margin: 0 auto 5px auto;
+}
+
+footer {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+footer p {
+    margin-top: 5px !important;
+}
