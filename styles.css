@@ -1060,3 +1060,22 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
     border-radius: 28px !important;
   }
 }
+
+/* Reduced spacing around about logo */
+.about-logo {
+    padding: 20px 0 10px 0 !important;
+    margin: 0 !important;
+}
+
+.about-logo img {
+    width: 260px;
+    max-width: 75vw;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+footer {
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+}
