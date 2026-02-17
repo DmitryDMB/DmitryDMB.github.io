@@ -1131,3 +1131,29 @@ footer p {
     margin: 0 !important;
     padding: 5px 0 0 0 !important;
 }
+
+/* EXTREME crop spacing */
+.about-logo {
+    padding: 0 !important;
+    margin-top: -40px !important;
+    margin-bottom: -20px !important;
+}
+
+.about-logo img {
+    width: 230px;
+    max-width: 65vw;
+    height: auto;
+    display: block;
+    margin: 0 auto !important;
+}
+
+footer {
+    margin-top: -15px !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+footer p {
+    margin: 0 !important;
+    padding: 0 !important;
+}
