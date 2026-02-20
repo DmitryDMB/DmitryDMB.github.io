@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Basic robots file for a static site.
