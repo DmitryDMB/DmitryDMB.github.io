@@ -144,6 +144,20 @@ header{
   image-rendering: crisp-edges;
   transform: translateZ(0);
 }
+
+.brand .underlogo{
+  width: 180px;
+  height: auto;
+  display:block;
+  margin-top: -8px; /* максимально близко к логотипу */
+}
+
+@media (max-width: 480px){
+  .brand .underlogo{
+    width: 160px;
+    margin-top: -6px;
+  }
+}
 .brand .tag{
   display:block;
   width:100%;
