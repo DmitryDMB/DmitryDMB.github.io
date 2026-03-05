@@ -1,0 +1,1113 @@
+
+:root{
+  --bg:#05050a;
+  --panel:rgba(255,255,255,.06);
+  --panel2:rgba(0,0,0,.35);
+  --text:#f5f7ff;
+  --muted:rgba(245,247,255,.72);
+  --line:rgba(255,255,255,.14);
+  --neon1:#7C3AED;   /* purple */
+  --neon2:#22D3EE;   /* cyan */
+  --neon3:#A3E635;   /* lime */
+  --shadow: 0 18px 60px rgba(0,0,0,.65);
+  --radius: 20px;
+  --max: 1100px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-display: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  /* Более ровный фон без полос (iOS иногда дает "синие линии" на градиентах) */
+  background: var(--bg);
+  overflow-x:hidden;
+}
+
+/* iOS/Safari: remove square tap highlight on rounded links/buttons */
+a, button{ -webkit-tap-highlight-color: transparent; }
+
+
+a{color:inherit; text-decoration:none}
+img{max-width:100%; display:block}
+
+.container{
+  width:min(var(--max), calc(100% - 40px));
+  margin:0 auto;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:40;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));
+  border-bottom:1px solid var(--line);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:16px;
+  padding:14px 0;
+}
+
+/* stacked header: logo on top, tabs under it */
+.nav.navstack{
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:12px 0 10px;
+  position:relative;
+}
+.nav.navstack .brand{
+  min-width:auto;
+  justify-content:center;
+}
+.nav.navstack .navlinks{
+  justify-content:center;
+}
+
+/* burger menu */
+.burger{
+  display:none;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.05);
+  border-radius: 14px;
+  padding:10px 12px;
+  gap:6px;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:absolute;
+  right:0;
+  top:14px;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.burger:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.28);
+  box-shadow: 0 12px 30px rgba(0,0,0,.45);
+}
+.burger span{
+  display:block;
+  width:22px;
+  height:2px;
+  border-radius:999px;
+  background: rgba(245,247,255,.9);
+  box-shadow: 0 0 10px rgba(34,211,238,.35);
+}
+
+@media (max-width: 720px){
+  .burger{display:inline-flex; flex-direction:column;}
+  .nav.navstack{padding:12px 0 12px;}
+  .nav.navstack .navlinks{display:none;}
+  body.nav-open .nav.navstack .navlinks{
+    display:flex;
+    width:100%;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+    padding:10px 0 2px;
+    gap:10px;
+  }
+  body.nav-open .nav.navstack .pill{
+    width:100%;
+    text-align:center;
+  }
+  body.nav-open .nav.navstack .navlinks .pill{display:flex; justify-content:center}
+  body.nav-open .nav.navstack .navlinks .pill.mobile-only{display:flex; justify-content:center}
+
+}
+
+.brand{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  width:210px;
+  min-width: 180px;
+}
+.brand .logo{
+  width:210px;
+  height:auto;
+  filter: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+}
+.brand .tag{
+  display:block;
+  width:100%;
+  text-align:center;
+  font-family: "Comic Neue", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  transform: skewX(-10deg) scaleX(1.15);
+  color: rgba(230,230,230,.72);
+  -webkit-text-stroke: 1px rgba(10,10,10,.55);
+  text-shadow:
+    0 1px 0 rgba(0,0,0,.55),
+    0 0 10px rgba(0,255,255,.18),
+    0 0 18px rgba(255,0,255,.14);
+  opacity: .9;
+}
+
+.navlinks{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.pill{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:14px;
+  letter-spacing:.4px;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  /* Forces Safari to respect rounded clipping even with filters */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  transform: translateZ(0);
+}
+.pill::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  /* Prevent visible squared corners on iOS/Safari (blurred glow ignores parent radius sometimes) */
+  border-radius: inherit;
+  background:linear-gradient(90deg, rgba(124,58,237,.55), rgba(34,211,238,.45), rgba(163,230,53,.35));
+  opacity:0;
+  transition:opacity .25s ease;
+  filter: blur(8px);
+  /* Safari sometimes doesn't clip filtered layers to border-radius */
+  clip-path: inset(0 round 999px);
+}
+.pill > span{position:relative; z-index:1}
+.pill:hover{
+  transform: translateY(-2px);
+  background:rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.26);
+  box-shadow: 0 10px 26px rgba(0,0,0,.45);
+}
+.pill:hover::before{opacity:.6}
+
+.pill.active{
+  border-color: rgba(34,211,238,.92);
+  background: linear-gradient(90deg, rgba(34,211,238,.22), rgba(124,58,237,.14));
+  box-shadow:
+    0 0 0 1px rgba(34,211,238,.10),
+    0 10px 30px rgba(0,0,0,.55),
+    0 0 26px rgba(34,211,238,.25);
+  text-shadow: 0 0 10px rgba(34,211,238,.25);
+}
+.pill.active::before{opacity:.75}
+
+.pill.active::after{
+  content:"";
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:6px;
+  height:2px;
+  border-radius:999px;
+  background: linear-gradient(90deg, rgba(34,211,238,.0), rgba(34,211,238,.85), rgba(124,58,237,.55), rgba(34,211,238,.0));
+  box-shadow: 0 0 18px rgba(34,211,238,.35);
+  opacity:.95;
+}
+
+.cta{
+  border:1px solid rgba(34,211,238,.55);
+  background: linear-gradient(90deg, rgba(34,211,238,.12), rgba(124,58,237,.10));
+}
+
+main{padding:38px 0 74px}
+
+.hero{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:24px;
+  align-items:center;
+}
+
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  border:1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+
+  padding:22px;
+  overflow:hidden;
+}
+
+
+.hero-card{
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-card::after{
+  content:"";
+  position:absolute;
+  width:520px; height:520px;
+  right:-220px; top:-260px;
+  background: conic-gradient(from 120deg, rgba(124,58,237,.0), rgba(124,58,237,.35), rgba(34,211,238,.35), rgba(163,230,53,.25), rgba(124,58,237,.0));
+  filter: blur(2px);
+  opacity:.6;
+  transform: rotate(8deg);
+}
+.hero-card > *{position:relative; z-index:2}
+
+.kicker{
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  color:var(--muted);
+  font-size:13px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+}
+.dot{
+  width:8px; height:8px;
+  background:var(--neon2);
+  border-radius:999px;
+  box-shadow: 0 0 18px rgba(34,211,238,.9);
+}
+h1{
+  font-family: var(--font-display);
+  margin:12px 0 10px;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height:1.05;
+}
+.sub{
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height:1.6;
+  max-width: 62ch;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin: 18px 0 6px;
+}
+.badge{
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px dashed rgba(255,255,255,.25);
+  background: rgba(0,0,0,.25);
+  font-size:13px;
+  color: rgba(245,247,255,.84);
+}
+
+.btnrow{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
+.btn{
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  cursor:pointer;
+  user-select:none;
+  overflow:hidden;
+  isolation:isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  transform: translateZ(0);
+}
+.btn:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.28);
+  box-shadow: 0 14px 36px rgba(0,0,0,.50);
+}
+.btn.primary{
+  border-color: rgba(34,211,238,.55);
+  background: linear-gradient(90deg, rgba(34,211,238,.15), rgba(124,58,237,.12));
+}
+.btn.ghost{
+  background: rgba(0,0,0,.18);
+  border-style:dashed;
+  border-color: rgba(255,255,255,.22);
+}
+
+.side{
+  padding:22px;
+}
+.side h3{margin:0 0 10px; font-size:18px}
+.side p{margin:0; color:var(--muted); line-height:1.6}
+
+.grid{
+  display:grid;
+  gap:18px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top:22px;
+}
+.tile{
+  padding:18px;
+}
+.tile h3{margin:0 0 8px}
+.tile p{margin:0; color:var(--muted); line-height:1.55}
+
+.section{
+  margin-top:34px;
+}
+.section-title{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:12px;
+}
+.section-title h2{
+  margin:0;
+  font-size: 22px;
+  letter-spacing:.3px;
+}
+.section-title .hint{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.list{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px;
+}
+.item{
+  padding:18px;
+}
+.item strong{display:block; margin-bottom:6px}
+.item .meta{color:var(--muted); line-height:1.55}
+
+.table{
+  width:100%;
+  border-collapse: collapse;
+  overflow:hidden;
+  border-radius: 16px;
+}
+.table th,.table td{
+  padding:14px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.table th{
+  text-align:left;
+  color: rgba(245,247,255,.9);
+  font-weight:600;
+  background: rgba(255,255,255,.05);
+}
+.table tr:hover td{background: rgba(255,255,255,.03)}
+.table td{color: var(--muted)}
+
+footer{
+  border-top:1px solid var(--line);
+  background: rgba(0,0,0,.55);
+  padding:28px 0;
+  color: var(--muted);
+}
+.foot{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  flex-wrap:wrap;
+}
+.small{font-size:12px; opacity:.85}
+
+.foot .btnrow{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  margin-top:10px;
+  width:100%;
+}
+
+
+/* reveal animations */
+.reveal{
+  opacity:0;
+  transform: translateY(14px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.on{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* mobile */
+@media (max-width: 920px){
+  .hero{grid-template-columns:1fr; }
+  .brand{width:190px}
+  .brand .logo{width:190px}
+  .brand .tag{font-size:20px; transform: skewX(-10deg) scaleX(1.18);}
+  .grid{grid-template-columns:1fr}
+  .list{grid-template-columns:1fr}
+
+  /* footer mobile */
+  footer .foot{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    justify-content:center;
+    gap:14px;
+  }
+  footer .foot .btnrow{
+    justify-content:center;
+    margin-top:6px;
+  }
+}
+
+@media (max-width: 520px){
+  .container{width: min(var(--max), calc(100% - 28px));}
+  .pill{padding:9px 12px; font-size:13px}
+  .hero-card{padding:22px}
+  .btn{width:100%}
+}
+
+/* footer links */
+.footer-links{
+  justify-content:center;
+  width:100%;
+  gap:14px;
+  margin-top:12px;
+}
+.footer-links .pill{padding:12px 18px}
+
+
+/* Mobile-only nav items: show in burger, hide on wide screens */
+.mobile-only{ display:inline-flex; }
+@media (min-width: 820px){
+  .mobile-only{ display:none !important; }
+}
+
+/* Badges layout fix on phones: keep 2x2 grid so "Онлайн/оффлайн" aligns nicely */
+@media (max-width: 520px){
+  .badges{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  .badge{
+    text-align:center;
+    white-space:normal;
+    justify-self:stretch;
+  }
+}
+
+
+/* Reviews form */
+.review-form .rf-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 720px){
+  .review-form .rf-grid{grid-template-columns: 1fr;}
+}
+.rf-field{display:block}
+.rf-field > span{
+  display:block;
+  font-size: .95rem;
+  color: rgba(245,247,255,.85);
+  margin: 0 0 8px;
+}
+.review-form input,
+.review-form textarea{
+  width:100%;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(245,247,255,.95);
+  outline: none;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.review-form textarea{resize: vertical; min-height: 120px}
+.review-form input:focus,
+.review-form textarea:focus{
+  border-color: rgba(34,211,238,.55);
+  box-shadow: 0 0 0 3px rgba(34,211,238,.15);
+}
+.rf-rating{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-direction: row-reverse;
+  justify-content:flex-end;
+  user-select:none;
+}
+.rf-rating input{display:none}
+.rf-rating label{
+  font-size: 28px;
+  line-height: 1;
+  cursor:pointer;
+  color: rgba(245,247,255,.25);
+  text-shadow: 0 0 14px rgba(124,58,237,.25);
+  transition: transform .12s ease, color .12s ease, text-shadow .12s ease;
+}
+.rf-rating label:hover{
+  transform: translateY(-1px);
+  color: rgba(34,211,238,.75);
+  text-shadow: 0 0 18px rgba(34,211,238,.35);
+}
+.rf-rating input:checked ~ label{
+  color: rgba(124,58,237,.85);
+  text-shadow: 0 0 18px rgba(124,58,237,.45);
+}
+.review-list{
+  margin-top: 14px;
+  display:grid;
+  gap: 14px;
+}
+.review-item{
+  padding: 16px 16px;
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+.review-item .meta{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:8px;
+  color: rgba(245,247,255,.75);
+  font-size:.92rem;
+}
+.review-item .stars{
+  color: rgba(124,58,237,.9);
+  text-shadow: 0 0 14px rgba(124,58,237,.35);
+}
+.review-item .text{
+  color: rgba(245,247,255,.85);
+  white-space: pre-wrap;
+}
+
+
+/* --- v5 tweaks --- */
+.card, .meta, .sub, .text { word-break: break-word; overflow-wrap:anywhere; }
+
+.price-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 10px;
+  margin-top:12px;
+}
+.price-table th, .price-table td{
+  padding:10px 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+}
+.price-table th{
+  text-align:left;
+  color: rgba(245,247,255,.85);
+  font-weight:700;
+}
+.price-table td:last-child, .price-table th:last-child{
+  text-align:right;
+  white-space:nowrap;
+}
+.price-table tr:first-child th:first-child{border-top-left-radius:14px}
+.price-table tr:first-child th:last-child{border-top-right-radius:14px}
+.price-table tr:last-child td:first-child{border-bottom-left-radius:14px}
+.price-table tr:last-child td:last-child{border-bottom-right-radius:14px}
+
+.warmup-highlight{font-weight:800; color: rgba(34,211,238,.85); text-shadow: 0 0 18px rgba(34,211,238,.25);}
+
+.rf-rating label{
+  display:inline-flex;
+  padding:6px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.review-item{opacity:0; transform: translateY(10px);}
+.review-item.in{animation: reviewIn .5s ease forwards;}
+@keyframes reviewIn{
+  from{opacity:0; transform: translateY(10px);}
+  to{opacity:1; transform: translateY(0);}
+}
+
+.card, .card p, .meta, .pill, .btn, .input, textarea{max-width:100%}
+.card, .card p{overflow-wrap:anywhere; word-break:break-word}
+
+.profile-photo-wrap{display:flex;justify-content:center;align-items:center;margin:22px 0 0}
+.profile-photo{width:min(420px, 92vw);height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+
+.btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:18px 0 6px}
+.btn-row .btn{flex:1 1 220px}
+
+.about-photo-wrap{display:flex;justify-content:center;align-items:center;margin:12px auto;padding:0}
+.about-photo{width:100%;max-width:340px;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.about-photo{width:min(420px, 92vw);height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+
+/* --- Галерея --- */
+.gallery-grid{grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));}
+.media-thumb{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+}
+.video-box{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  aspect-ratio: 16 / 9;
+}
+.media-video{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit: cover;
+  /* iOS/Safari: try to keep video layer crisp */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Safari/iOS: убираем нативные кнопки/оверлей «Play» на превью видео.
+   На превью управление не нужно — запуск/пауза делаем через IntersectionObserver. */
+video.media-preview::-webkit-media-controls,
+video.media-preview::-webkit-media-controls-panel,
+video.media-preview::-webkit-media-controls-start-playback-button,
+video.media-preview::-webkit-media-controls-play-button,
+video.media-preview::-webkit-media-controls-overlay-play-button{
+  display:none !important;
+  -webkit-appearance:none;
+}
+
+.play-ico{
+  display:none !important;
+  pointer-events:none;
+
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:54px;
+  height:54px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.22);
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  pointer-events:none;
+}
+
+/* В галерее не показываем значок «плей» поверх превью видео.
+   Это правило автоматически применяется и к новым видео, которые будут добавлены позже. */
+.gallery-grid .play-ico{ display:none !important; }
+
+
+/* --- Gallery interactions --- */
+.media-open{
+  padding:0;
+  border:0;
+  background:transparent;
+  width:100%;
+  text-align:left;
+  cursor:pointer;
+}
+.gallery-grid .card{
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+}
+.gallery-grid .card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  border-color: rgba(255,255,255,.18);
+}
+.gallery-grid .card:hover .media-thumb,
+.gallery-grid .card:hover .video-box{
+  border-color: rgba(255,255,255,.22);
+}
+
+/* Убираем "линии"/полосы между элементами галереи на телефонах:
+   - убираем gap и внутренние отступы карточек
+   - снимаем скругления и рамки у превью, чтобы блоки стыковались без артефактов */
+@media (max-width: 720px){
+  .gallery-grid{gap:0; margin-top:14px;}
+  .gallery-grid .card,
+  .gallery-grid .tile{
+    padding:0;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+  }
+  .gallery-grid .media-open{display:block;}
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{
+    border:0;
+    border-radius:0;
+    background:transparent;
+  }
+}
+
+/* Lightbox */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:9999;
+}
+.lightbox.on{display:flex;}
+.lightbox.is-video{
+  /*
+    iOS/Safari: оставляем flex-центрирование, чтобы видео было ровно по центру,
+    а контролы не уезжали под нижнюю панель.
+  */
+  padding:
+    max(16px, env(safe-area-inset-top))
+    16px
+    max(16px, env(safe-area-inset-bottom))
+    16px;
+}
+.lb-inner{
+  width:min(1000px, 96vw);
+  max-height: 88vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Large / fullscreen-like lightbox for videos (visually full screen, but video centered) */
+.lightbox.is-video .lb-inner{
+  width:100%;
+  height:100%;
+  max-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lightbox.is-video .lb-inner video{
+  width: min(96vw, 980px);
+  height: auto;
+  max-height: calc(100vh - 140px);
+  object-fit: contain;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background: #000;
+}
+.lb-inner img, .lb-inner video{
+  width:100%;
+  height:auto;
+  max-height:88vh;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.2);
+}
+.lb-close{
+  position:absolute;
+  top:max(14px, env(safe-area-inset-top));
+  right:16px;
+  /*
+    Важно для мобильных/вертикальных видео:
+    без z-index кнопка может оказаться под видео (из-за порядка слоёв),
+    поэтому «крестик» не видно и видео невозможно закрыть.
+  */
+  z-index: 10001;
+  width:44px; height:44px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  color:#fff;
+  font-size:30px;
+  line-height:1;
+  cursor:pointer;
+}
+.lb-close:hover{
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.24);
+}
+
+
+/* Gallery video thumbnails: show first frame when possible */
+.gallery-video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: transparent;
+}
+
+
+/* === Gallery video fix for vertical videos === */
+.gallery-item {
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+}
+
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* (moved выше) правила для видео в лайтбоксе задаются через .lightbox.is-video .lb-inner video */
+
+
+/* Portrait videos in gallery: fill card with no side bars */
+.video-box.portrait{
+  aspect-ratio: 9 / 16;
+}
+
+/* === Галерея: ячейки как на референсе (рамка + внутренний скруглённый контент) === */
+.gallery-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap:24px;
+}
+
+.gallery-grid .tile{
+  position:relative;
+  padding:22px;
+  border-radius:34px;
+  background: rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    inset 0 0 0 1px rgba(0,0,0,.25),
+    0 22px 60px rgba(0,0,0,.62);
+  overflow:hidden;
+}
+
+/* Внутренняя «вторая рамка» */
+.gallery-grid .tile::before{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.35);
+  pointer-events:none;
+}
+
+.gallery-grid .media-open{display:block;}
+
+.gallery-grid .media-thumb,
+.gallery-grid .video-box{
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.22);
+}
+
+.gallery-grid .tile:hover{
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.09),
+    inset 0 0 0 1px rgba(0,0,0,.25),
+    0 30px 80px rgba(0,0,0,.72);
+}
+
+.gallery-grid .media-thumb img,
+.gallery-grid video.gallery-video{
+  transition: transform .55s ease;
+}
+
+.gallery-grid .tile:hover .media-thumb img,
+.gallery-grid .tile:hover video.gallery-video{
+  transform: scale(1.06);
+}
+
+/* На телефонах оставляем стиль (как в референсе), только чуть плотнее */
+@media (max-width: 720px){
+  .gallery-grid{gap:14px;}
+  .gallery-grid .tile{padding:14px; border-radius:28px;}
+  .gallery-grid .tile::before{inset:8px; border-radius:22px;}
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{border-radius:18px;}
+}
+/* Переопределение старых мобильных правил для галереи (оставляем фирменные рамки) */
+@media (max-width: 720px){
+  .gallery-grid .tile{
+    background: rgba(255,255,255,.04) !important;
+    border:1px solid rgba(255,255,255,.10) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.07),
+      inset 0 0 0 1px rgba(0,0,0,.25),
+      0 18px 46px rgba(0,0,0,.55) !important;
+  }
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{
+    border:1px solid rgba(255,255,255,.08) !important;
+    background: rgba(0,0,0,.22) !important;
+  }
+}
+
+/* === Gallery frame: single clean frame (per reference) === */
+.gallery-grid .card{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.gallery-grid .tile{
+  position: relative;
+  padding: 18px !important;
+  border-radius: 34px !important;
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 18px 50px rgba(0,0,0,.60) !important;
+  overflow: hidden;
+}
+
+/* remove extra inner frames */
+.gallery-grid .tile::before{ display:none !important; }
+.gallery-grid .media-thumb,
+.gallery-grid .video-box{
+  border: none !important;
+  background: transparent !important;
+  border-radius: 26px !important;
+  overflow: hidden;
+}
+
+@media (max-width: 720px){
+  .gallery-grid{ gap: 18px !important; }
+  .gallery-grid .tile{ padding: 14px !important; border-radius: 28px !important; }
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{ border-radius: 22px !important; }
+}
+
+/* === Gallery frame FINAL: single frame only (matches reference) === */
+.gallery-grid{ gap: 18px !important; }
+.gallery-grid .tile{
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 34px !important;
+}
+.gallery-grid .tile::before{ display:none !important; }
+.gallery-grid .media-thumb,
+.gallery-grid .video-box{
+  border-radius: 34px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  background: rgba(255,255,255,.03) !important;
+  box-shadow: 0 18px 50px rgba(0,0,0,.60) !important;
+}
+
+/* Videos: show full frame like the first video (no aggressive crop) */
+.gallery-grid video.gallery-video{
+  object-fit: contain !important;
+  background: #000 !important;
+}
+
+@media (max-width: 720px){
+  .gallery-grid{ gap: 14px !important; }
+  .gallery-grid .tile{ border-radius: 28px !important; }
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{ border-radius: 28px !important; }
+}
+
+/* === Gallery frame OVERRIDE (single frame like reference) === */
+.gallery-grid .tile{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.gallery-grid .media-open{
+  display:block !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* one single frame on the media element */
+.gallery-grid .media-thumb,
+.gallery-grid .video-box{
+  border-radius: 34px !important;
+  overflow: hidden !important;
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 18px 50px rgba(0,0,0,.60) !important;
+}
+
+.gallery-grid .media-thumb img,
+.gallery-grid video.gallery-video{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+@media (max-width: 720px){
+  .gallery-grid .media-thumb,
+  .gallery-grid .video-box{
+    border-radius: 28px !important;
+  }
+}
+
+
+/* === About photo spacing fix ===
+   Tight + equal spacing between text ↔ photo (especially on mobile). */
+.about-photo-wrap {
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
+  padding: 0 !important;
+}
+
+.about-photo {
+  display: block;
+}
+
+
+/* --- About layout --- */
+.about-hero{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:26px;
+  align-items:center;
+}
+.about-hero__text{min-width:0}
+.about-hero__text h1{margin-top:4px}
+.about-hero__text .sub{margin-top:12px; text-align:left}
+.about-hero__media{display:flex; justify-content:center; align-items:center}
+.about-hero__media .about-photo{max-width:440px}
+@media (max-width: 860px){
+  .about-hero{grid-template-columns:1fr}
+  .about-hero__media{order:-1}
+  .about-hero__text .sub{text-align:left}
+}
