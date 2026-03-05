@@ -75,6 +75,23 @@ header{
   justify-content:center;
 }
 
+/* under-logo label */
+.underlogo{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:2px;
+  margin-bottom:6px;
+  pointer-events:none;
+}
+.underlogo-img{
+  width:clamp(220px, 70vw, 560px);
+  height:auto;
+  display:block;
+}
+
+
 /* burger menu */
 .burger{
   display:none;
