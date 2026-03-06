@@ -566,3 +566,37 @@ triggers.forEach(btn=>{
     previews.forEach(v=>{ ensureLoaded(v); startPlay(v); });
   }
 })();
+
+
+
+/* premium motion */
+(function(){
+  const logo = document.querySelector('.brand');
+  const logoImg = document.querySelector('.brand .logo');
+  if (!logo || !logoImg) return;
+
+  let ticking = false;
+
+  function updateParallax(){
+    const y = window.scrollY || window.pageYOffset || 0;
+    const move = Math.min(y * 0.18, 32);
+    const scale = Math.max(1 - y * 0.00015, 0.94);
+    const opacity = Math.max(1 - y * 0.0013, 0.55);
+
+    logo.style.transform = `translate3d(0, ${move}px, 0)`;
+    logoImg.style.transform = `translate3d(0, ${move * 0.18}px, 0) scale(${scale})`;
+    logo.style.opacity = opacity.toFixed(3);
+
+    ticking = false;
+  }
+
+  function onScroll(){
+    if (!ticking){
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+
+  updateParallax();
+  window.addEventListener('scroll', onScroll, { passive:true });
+})();

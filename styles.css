@@ -1143,3 +1143,95 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   background:linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0));
   pointer-events:none;
 }
+
+
+
+/* premium logo motion */
+.brand{
+  position: relative;
+  will-change: transform, opacity;
+}
+
+.brand .logo{
+  will-change: transform, opacity, filter;
+  animation: logoIntro 1.2s cubic-bezier(.18,.7,.2,1) both;
+  transform-origin: center center;
+}
+
+@keyframes logoIntro{
+  0%{
+    opacity:0;
+    transform: translate3d(0, 20px, 0) scale(.92);
+    filter: blur(10px);
+  }
+  55%{
+    opacity:1;
+    transform: translate3d(0, 0, 0) scale(1.03);
+    filter: blur(0);
+  }
+  100%{
+    opacity:1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* smoother, more premium hero reveal */
+.hero{
+  position: relative;
+  overflow: hidden;
+}
+
+.hero .card,
+.hero .glass,
+.hero .panel,
+.hero .hero-card,
+.hero > *{
+  will-change: transform, opacity, filter;
+}
+
+.reveal{
+  opacity:0;
+  transform: translateY(28px) scale(.985);
+  filter: blur(10px);
+  transition:
+    opacity .95s cubic-bezier(.2,.8,.2,1),
+    transform .95s cubic-bezier(.2,.8,.2,1),
+    filter .95s cubic-bezier(.2,.8,.2,1);
+}
+
+.reveal.on{
+  opacity:1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* subtle premium card entrance */
+.hero .card,
+.hero .glass,
+.hero .panel,
+.hero .hero-card{
+  animation: cardIntro 1s cubic-bezier(.2,.8,.2,1) .15s both;
+}
+
+@keyframes cardIntro{
+  0%{
+    opacity:0;
+    transform: translate3d(0, 30px, 0) scale(.985);
+    filter: blur(14px);
+  }
+  100%{
+    opacity:1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* soften logo-to-content edge */
+.hero::before{
+  z-index: 2;
+}
+.hero > *{
+  position: relative;
+  z-index: 3;
+}
