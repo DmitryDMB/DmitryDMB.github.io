@@ -72,9 +72,9 @@ header{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  width:320px;
-  min-width:320px;
-  margin-top:18px;
+  width:260px;
+  min-width:260px;
+  margin-top:16px;
 }
 .nav.navstack .navlinks{
   justify-content:center;
@@ -138,12 +138,12 @@ header{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  width:320px;
-  min-width:320px;
-  margin-top:18px;
+  width:260px;
+  min-width:260px;
+  margin-top:16px;
 }
 .brand .logo{
-  width:320px;
+  width:260px;
   height:auto;
   display:block;
   margin:0 auto;
@@ -472,12 +472,12 @@ footer{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  width:320px;
-  min-width:320px;
-  margin-top:18px;
+  width:260px;
+  min-width:260px;
+  margin-top:16px;
 }
   .brand .logo{
-  width:320px;
+  width:260px;
   height:auto;
   display:block;
   margin:0 auto;
@@ -1131,4 +1131,15 @@ video.media-preview::-webkit-media-controls-overlay-play-button{
   .about-hero{grid-template-columns:1fr}
   .about-hero__media{order:-1}
   .about-hero__text .sub{text-align:left}
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  top:-80px;
+  left:0;
+  width:100%;
+  height:120px;
+  background:linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0));
+  pointer-events:none;
 }
