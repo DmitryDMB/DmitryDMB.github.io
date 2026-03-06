@@ -1466,3 +1466,38 @@ header,
     display: inline-flex !important;
   }
 }
+
+/* FORCE visible burger */
+.burger{
+ position:fixed !important;
+ top:18px !important;
+ right:18px !important;
+ z-index:9999 !important;
+ display:flex !important;
+ align-items:center;
+ justify-content:center;
+ width:46px;
+ height:46px;
+ border-radius:14px;
+ background:rgba(10,10,15,.85) !important;
+ border:1px solid rgba(255,255,255,.35) !important;
+ backdrop-filter: blur(6px);
+ box-shadow:0 8px 30px rgba(0,0,0,.6);
+ opacity:1 !important;
+ visibility:visible !important;
+}
+
+.burger span{
+ width:20px;
+ height:2px;
+ background:#ffffff !important;
+ box-shadow:0 0 6px rgba(255,255,255,.6);
+}
+
+.brand{
+ z-index:1;
+}
+
+header{
+ z-index:10;
+}
