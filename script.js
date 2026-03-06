@@ -600,3 +600,10 @@ triggers.forEach(btn=>{
   updateParallax();
   window.addEventListener('scroll', onScroll, { passive:true });
 })();
+
+
+
+/* ensure premium button reveal remains stable after load */
+window.addEventListener('load', function(){
+  document.body.classList.add('premium-ready');
+});
