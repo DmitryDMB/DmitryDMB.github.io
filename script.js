@@ -157,7 +157,7 @@ function renderPublic(items){
             <span>${escapeHtml(it.city||'')}</span>
             <span>${when}</span>
           </div>
-          <div class="text">${escapeHtml(it.message||'')}</div>
+          <div class="text">${escapeHtml(it.message || it.text || '')}</div>
         </div>
       `;
     }).join('');
@@ -215,7 +215,7 @@ function renderPublic(items){
             <span>${escapeHtml(it.city||'')}</span>
             <span>${when}</span>
           </div>
-          <div class="text">${escapeHtml(it.message||'')}</div>
+          <div class="text">${escapeHtml(it.message || it.text || '')}</div>
         </div>
       `;
     }).join('');
@@ -223,6 +223,7 @@ function renderPublic(items){
 
   render();
   loadPublic();
+  wireGoogleFormButton();
 
   if(!form) return;
 
