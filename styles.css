@@ -132,32 +132,24 @@ header{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:6px;
-  width:210px;
-  min-width: 180px;
+  justify-content:center;
+  gap:0;
+  width:270px;
+  min-width: 270px;
+  margin-top: 12px;
 }
 .brand .logo{
-  width:210px;
+  width:270px;
   height:auto;
-  filter: none;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  transform: translateZ(0);
-}
-
-.brand .underlogo{
-  width: 180px;
-  height: auto;
   display:block;
-  margin-top: -8px; /* максимально близко к логотипу */
+  margin:0 auto;
+  filter:none;
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  transform:translateZ(0);
 }
 
-@media (max-width: 480px){
-  .brand .underlogo{
-    width: 160px;
-    margin-top: -6px;
-  }
-}
+.brand .underlogo{display:none !important;}
 .brand .tag{
   display:block;
   width:100%;
@@ -474,8 +466,8 @@ footer{
 /* mobile */
 @media (max-width: 920px){
   .hero{grid-template-columns:1fr; }
-  .brand{width:190px}
-  .brand .logo{width:190px}
+  .brand{width:220px; min-width:220px; margin-top:10px}
+  .brand .logo{width:220px}
   .brand .tag{font-size:20px; transform: skewX(-10deg) scaleX(1.18);}
   .grid{grid-template-columns:1fr}
   .list{grid-template-columns:1fr}
