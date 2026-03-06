@@ -1423,3 +1423,46 @@ section:first-of-type{
       logoGlowIntro 2s ease-out .1s both;
   }
 }
+
+
+
+/* burger visibility fix */
+.burger{
+  z-index: 50 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-flex !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 14px !important;
+  background: rgba(12,12,18,.72) !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.38), 0 0 0 1px rgba(255,255,255,.04) inset !important;
+}
+
+.burger span{
+  opacity: 1 !important;
+  background: rgba(245,247,255,.92) !important;
+}
+
+header,
+.nav,
+.nav.navstack,
+.brand{
+  position: relative;
+}
+
+.header-fade{
+  z-index: 1 !important;
+}
+
+.nav > *{
+  position: relative;
+  z-index: 3;
+}
+
+@media (max-width: 720px){
+  .burger{
+    display: inline-flex !important;
+  }
+}
