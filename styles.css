@@ -1571,3 +1571,6 @@ main{
     height:58px !important;
   }
 }
+
+/* unify top spacing like homepage */
+.card.hero-card{padding-top:28px !important;}
