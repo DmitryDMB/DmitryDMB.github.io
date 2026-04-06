@@ -1534,11 +1534,11 @@ header::after{
 section:first-of-type,
 main > section:first-child{
   margin-top: 12px !important;
-  padding-top: 24px !important;
+  padding-top: 0 !important;
 }
 
 main{
-  padding-top: 24px !important;
+  padding-top: 0 !important;
 }
 
 .container{
