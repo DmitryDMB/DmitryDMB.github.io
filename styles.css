@@ -1571,3 +1571,7 @@ main{
     height:58px !important;
   }
 }
+
+
+/* Added global padding */
+.container, section, .section { padding-left:16px; padding-right:16px; }
