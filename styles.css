@@ -25,7 +25,7 @@ body{
   font-family:var(--font);
   color:var(--text);
   /* Более ровный фон без полос (iOS иногда дает "синие линии" на градиентах) */
-  background: radial-gradient(ellipse at top, #0b0b14 0%, #05050a 60%, #020203 100%);
+  background: var(--bg);
   overflow-x:hidden;
 }
 
@@ -45,9 +45,9 @@ header{
   position:sticky;
   top:0;
   z-index:40;
-  backdrop-filter: none;
-  background: transparent;
-  border-bottom:none; box-shadow:none;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));
+  border-bottom:1px solid var(--line);
 }
 
 .nav{
@@ -1568,60 +1568,4 @@ main{padding-top:24px !important;}
   .header-fade{
     height:58px !important;
   }
-}
-
-footer{margin-top:40px; padding-top:20px;}
-main{padding-bottom:40px;}
-
-hr, .divider { display:none !important; }
-
-header{
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-body, html{
-  background:#05050a !important;
-}
-
-/* remove top gap (iOS safe area issues) */
-body{
-  padding-top:0 !important;
-  margin-top:0 !important;
-}
-
-/* ensure first section sticks to top */
-main{
-  margin-top:0 !important;
-  padding-top:0 !important;
-}
-
-/* remove any accidental block gap under header */
-header + *{
-  margin-top:0 !important;
-}
-
-/* remove bottom white glow (iOS overscroll / safe area) */
-body::after{
-  content:'';
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:100px;
-  background:#05050a;
-  pointer-events:none;
-}
-
-/* also cover top just in case */
-body::before{
-  content:'';
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100px;
-  background:#05050a;
-  pointer-events:none;
 }
