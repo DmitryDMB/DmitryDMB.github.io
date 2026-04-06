@@ -25,7 +25,7 @@ body{
   font-family:var(--font);
   color:var(--text);
   /* Более ровный фон без полос (iOS иногда дает "синие линии" на градиентах) */
-  background: var(--bg);
+  background: radial-gradient(ellipse at top, #0b0b14 0%, #05050a 60%, #020203 100%);
   overflow-x:hidden;
 }
 
@@ -45,9 +45,9 @@ header{
   position:sticky;
   top:0;
   z-index:40;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));
-  border-bottom:none;
+  backdrop-filter: none;
+  background: transparent;
+  border-bottom:none; box-shadow:none;
 }
 
 .nav{
@@ -1572,3 +1572,5 @@ main{padding-top:24px !important;}
 
 footer{margin-top:40px; padding-top:20px;}
 main{padding-bottom:40px;}
+
+hr, .divider { display:none !important; }
