@@ -244,7 +244,7 @@ header{
   background: linear-gradient(90deg, rgba(34,211,238,.12), rgba(124,58,237,.10));
 }
 
-main{padding:38px 0 74px}
+main{padding-top:24px !important;}
 
 .hero{
   padding-top:0;
@@ -1534,12 +1534,10 @@ header::after{
 section:first-of-type,
 main > section:first-child{
   margin-top: 12px !important;
-  padding-top: 0 !important;
+  padding-top: 24px !important;
 }
 
-main{
-  padding-top: 0 !important;
-}
+main{padding-top:24px !important;}
 
 .container{
   position: relative;
