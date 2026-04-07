@@ -1573,3 +1573,24 @@ main{padding-top:24px !important;}
 
 footer{margin-top:60px;}
 .main, main{padding-bottom:40px;}
+
+header, .nav, .brand, .logo {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+header::before, header::after,
+.nav::before, .nav::after,
+.brand::before, .brand::after {
+  display:none !important;
+  content:none !important;
+}
+
+/* remove any divider lines globally */
+hr, .divider {
+  display:none !important;
+}
+
+/* fix spacing before footer */
+footer{margin-top:20px !important;}
+main, .main{padding-bottom:20px !important;}
