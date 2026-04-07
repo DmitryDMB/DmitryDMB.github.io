@@ -47,7 +47,7 @@ header{
   z-index:40;
   backdrop-filter: blur(14px);
   background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));
-  border-bottom:1px solid var(--line);
+  border-bottom:none;
 }
 
 .nav{
@@ -430,7 +430,7 @@ h1{
 .table td{color: var(--muted)}
 
 footer{
-  border-top:1px solid var(--line);
+  border-top:none;
   background: rgba(0,0,0,.55);
   padding:28px 0;
   color: var(--muted);
@@ -1569,3 +1569,7 @@ main{padding-top:24px !important;}
     height:58px !important;
   }
 }
+
+
+footer{margin-top:60px;}
+.main, main{padding-bottom:40px;}
