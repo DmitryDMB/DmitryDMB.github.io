@@ -1594,3 +1594,18 @@ hr, .divider {
 /* fix spacing before footer */
 footer{margin-top:20px !important;}
 main, .main{padding-bottom:20px !important;}
+
+.badge{
+  transition: all .25s ease;
+  cursor:pointer;
+}
+.badge:hover{
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+}
+.badge:active{
+  transform: scale(.97);
+}
+html{
+  scroll-behavior:smooth;
+}
