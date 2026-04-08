@@ -90,3 +90,12 @@
     }
   } catch (e) {}
 })();
+
+// production fix: safe telegram open
+document.querySelectorAll('[data-tg-text]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const text = btn.dataset.tgText || 'Привет! Хочу записаться.';
+        const url = 'https://t.me/Dmitry_DMB?text=' + encodeURIComponent(text);
+        window.open(url, '_blank');
+    });
+});
