@@ -1612,3 +1612,51 @@ main, .main{padding-bottom:20px !important;}
   0% {opacity:0; filter: blur(10px) brightness(1.5);}
   100% {opacity:1; filter: blur(0) brightness(1);}
 }
+
+
+/* FIX exact spacing around hero/main images */
+.hero, .main-photo-wrapper, .about-photo-wrapper {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:40px; /* equal spacing above and below */
+}
+
+/* ensure images don't add extra margins */
+.hero img, .main-photo, .about img {
+  margin:0 !important;
+  display:block;
+  border-radius:16px;
+}
+
+/* advanced smooth animation */
+.fade-in-glow {
+  opacity:0;
+  transform: translateY(20px) scale(0.98);
+  filter: blur(12px) brightness(1.4);
+  animation: smoothReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes smoothReveal {
+  0% {
+    opacity:0;
+    transform: translateY(30px) scale(0.95);
+    filter: blur(14px) brightness(1.6);
+  }
+  60% {
+    opacity:1;
+    transform: translateY(-4px) scale(1.01);
+    filter: blur(2px) brightness(1.1);
+  }
+  100% {
+    opacity:1;
+    transform: translateY(0) scale(1);
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* slight hover effect for premium feel */
+img.fade-in-glow:hover {
+  transform: scale(1.02);
+  transition: transform 0.4s ease;
+}
