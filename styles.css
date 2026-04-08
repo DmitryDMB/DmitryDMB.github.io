@@ -1594,3 +1594,21 @@ hr, .divider {
 /* fix spacing before footer */
 footer{margin-top:20px !important;}
 main, .main{padding-bottom:20px !important;}
+
+
+/* spacing around main images */
+.main-photo, .hero img, .about img {
+  display:block;
+  margin:40px auto;
+}
+
+/* animation */
+.fade-in-glow {
+  opacity:0;
+  animation: fadeGlow 1.2s ease forwards;
+}
+
+@keyframes fadeGlow {
+  0% {opacity:0; filter: blur(10px) brightness(1.5);}
+  100% {opacity:1; filter: blur(0) brightness(1);}
+}
