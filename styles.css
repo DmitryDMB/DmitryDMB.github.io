@@ -1594,3 +1594,5 @@ hr, .divider {
 /* fix spacing before footer */
 footer{margin-top:20px !important;}
 main, .main{padding-bottom:20px !important;}
+
+.hero-image{width:100%;max-width:320px;border-radius:20px;display:block;margin:16px auto;}
